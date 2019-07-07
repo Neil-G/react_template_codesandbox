@@ -1,13 +1,13 @@
 import React from "react";
 import { TopNav, Footer } from "./components/global";
+import { FullScreenLoadingIndicator } from "./components/shared";
 import { withRouter } from "react-router";
-import { BrowserRouter, Link, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import get from "lodash.get";
 import { globalLayout } from "./styles";
 import store from "./redux/store";
-import updater from "./redux/updater";
 const { Provider } = require("react-redux");
 
 /*
@@ -55,7 +55,7 @@ class AppComponent extends React.Component {
         {isLoggedIn ? (
           this.props.children
         ) : (
-          <div onClick={() => updater.login({})}>Loading your information</div>
+          <FullScreenLoadingIndicator text="this is a loading indicator" />
         )}
       </Container>
     );
@@ -64,7 +64,7 @@ class AppComponent extends React.Component {
 
 const App = withRouter(
   connect(state => ({
-    isLoggedIn: !!get(state, "session.user.id"),
+    isLoggedIn: !!get(state, "session.user.id", true),
     user: get(state, "session.user", {})
   }))(AppComponent)
 );

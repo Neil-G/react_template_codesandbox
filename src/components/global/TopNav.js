@@ -149,7 +149,7 @@ class TopNav extends React.Component {
         <SectionContainerLeft>
           {topNavItems.map(({ label, to }) => {
             return (
-              <TopNavItem>
+              <TopNavItem key={label}>
                 <Link to={to}>{label}</Link>
               </TopNavItem>
             );

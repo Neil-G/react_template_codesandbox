@@ -6,7 +6,7 @@ export default ({ componentName, shouldOpenComponent }) => {
     updateType: "store",
     actions: {
       toggleComponent: {
-        type: "update_global",
+        type: "globall",
         updateFunction: ({}, state) => {
           const isComponentOpen = state.isOpen[componentName];
 
