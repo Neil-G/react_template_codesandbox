@@ -1,13 +1,14 @@
-export default ({}) => {
+export default () => {
   return {
     updateType: "store",
-    actions: {
-      login: {
+    actions: [
+      {
+        name: "login user",
         type: "session",
-        updateFunction: ({}, state) => {
+        updateFunction: (_, state) => {
           return { ...state, user: { id: 1, email: "neil@gmail.com" } };
         }
       }
-    }
+    ]
   };
 };

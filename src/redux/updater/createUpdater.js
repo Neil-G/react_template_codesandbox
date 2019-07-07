@@ -8,47 +8,59 @@ export default ({ store }) => {
   | Dispatches actions in an action group 
   |--------------------------------------------------------------------------
   */
-  const processActionGroup = ({ res, error, actionGroup = {} }) => {
-    Object.keys(actionGroup).forEach(actionName => {
-      const action = actionGroup[actionName];
-      const { type, description, updateFunction, uiEventFunction } = action;
-      // check that type proper type is provided
-      if (type === undefined) {
-        return console.log(
-          [
-            `You forgot to specify a type for action "${actionName}".`,
-            `Please choose one of these types: ${allStoreBranches.join(", ")}`
-          ].join("\n")
-        );
-      }
-      if (!allStoreBranches.includes(type)) {
-        return console.log(
-          [
-            `You chose "${type}" type for action "${actionName}".`,
-            `Please choose one of these types: ${allStoreBranches.join(", ")}`
-          ].join("\n")
-        );
-      }
-      // fire associated, non-store-updating ui event
-      if (uiEventFunction) {
-        uiEventFunction({ res, error, store: store.getState() });
-      }
+  const processActionGroup = ({
+    res,
+    error,
+    actionGroup = [],
+    updaterMethod
+  }) => {
+    actionGroup.forEach(
+      ({ name, type, description, updateFunction, uiEventFunction }) => {
+        // check that type proper type is provided
+        if (type === undefined) {
+          return console.log(
+            [
+              `You forgot to specify a type for action "${name ||
+                "[name unprovided]"}" in updaterMethod "${updaterMethod}".`,
+              `Please choose one of these action types: ${allStoreBranches.join(
+                ", "
+              )}`
+            ].join("\n")
+          );
+        }
+        if (!allStoreBranches.includes(type)) {
+          return console.log(
+            [
+              `You chose "${type}" action type for action "${name ||
+                "[name unprovided]"}" in updaterMethod "${updaterMethod}".`,
+              `Please choose one of these action types: ${allStoreBranches.join(
+                ", "
+              )}`
+            ].join("\n")
+          );
+        }
 
-      // dispatch action
-      if (updateFunction) {
-        store.dispatch({
-          actionName,
-          description,
-          type,
-          // give updateFunction access to api and store data
-          updateFunction: updateFunction.bind(null, {
-            res,
-            error,
-            store: store.getState()
-          })
-        });
+        // fire associated, non-store-updating ui event
+        if (uiEventFunction) {
+          uiEventFunction({ res, error, store: store.getState() });
+        }
+
+        // dispatch action
+        if (updateFunction) {
+          store.dispatch({
+            name,
+            description,
+            type,
+            // give updateFunction access to api and store data
+            updateFunction: updateFunction.bind(null, {
+              res,
+              error,
+              store: store.getState()
+            })
+          });
+        }
       }
-    });
+    );
   };
   /*
   |--------------------------------------------------------------------------
@@ -58,8 +70,8 @@ export default ({ store }) => {
   const updateTypes = {
     /* Synchronous store updates, does not initiate no network activity */
     store: instructions => {
-      const { actions } = instructions;
-      processActionGroup({ actionGroup: actions });
+      const { actions, updaterMethod } = instructions;
+      processActionGroup({ actionGroup: actions, updaterMethod });
       return true;
     },
 
@@ -70,20 +82,29 @@ export default ({ store }) => {
         successActions,
         failureActions,
         afterActions,
-        serviceOptions
+        serviceOptions,
+        updaterMethod
       } = instructions;
 
-      processActionGroup({ actionGroup: beforeActions });
+      processActionGroup({ actionGroup: beforeActions, updaterMethod });
 
       return axios(serviceOptions || {})
         .then(res => {
-          processActionGroup({ res, actionGroup: successActions });
-          processActionGroup({ actionGroup: afterActions });
+          processActionGroup({
+            res,
+            actionGroup: successActions,
+            updaterMethod
+          });
+          processActionGroup({ actionGroup: afterActions, updaterMethod });
           return res;
         })
         .catch(error => {
-          processActionGroup({ error, actionGroup: failureActions });
-          processActionGroup({ actionGroup: afterActions });
+          processActionGroup({
+            error,
+            actionGroup: failureActions,
+            updaterMethod
+          });
+          processActionGroup({ actionGroup: afterActions, updaterMethod });
           return error;
         });
     }
@@ -102,13 +123,17 @@ export default ({ store }) => {
     updater[updaterMethod] = args => {
       // make the update object from the updaterMethod
       const instructions = updateSchemaFunction(args);
-      const { updateType } = instructions;
+      instructions.updaterMethod = updaterMethod;
+
       // check that proper updateType is provided
+      const { updateType } = instructions;
       if (updateType === undefined) {
         return console.log(
           [
             `You forgot to specify an updateType for updaterMethod "${updaterMethod}".`,
-            `Please choose one of these types: ${allUpdateTypes.join(", ")}`
+            `Please choose one of these updateTypes: ${allUpdateTypes.join(
+              ", "
+            )}`
           ].join("\n")
         );
       }
@@ -116,7 +141,9 @@ export default ({ store }) => {
         return console.log(
           [
             `You chose "${updateType}" updateType for updaterMethod "${updaterMethod}".`,
-            `Please choose one of these types: ${allUpdateTypes.join(", ")}`
+            `Please choose one of these updateTypes: ${allUpdateTypes.join(
+              ", "
+            )}`
           ].join("\n")
         );
       }

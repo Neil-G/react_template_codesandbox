@@ -4,10 +4,11 @@
 export default ({ componentName, shouldOpenComponent }) => {
   return {
     updateType: "store",
-    actions: {
-      toggleComponent: {
-        type: "globall",
-        updateFunction: ({}, state) => {
+    actions: [
+      {
+        name: "open/close global component",
+        type: "global",
+        updateFunction: (_, state) => {
           const isComponentOpen = state.isOpen[componentName];
 
           const isOpen = {
@@ -20,6 +21,6 @@ export default ({ componentName, shouldOpenComponent }) => {
           return { ...state, isOpen };
         }
       }
-    }
+    ]
   };
 };
