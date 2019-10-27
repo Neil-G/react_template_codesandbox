@@ -2,7 +2,7 @@ import axios from "axios";
 import updaterMethods from "./updaterMethods";
 import storeBranches from "./../store/storeBranches";
 const allStoreBranches = Object.keys(storeBranches);
-const config = require('../../config')[process.env.NODE_ENV]
+const config = require('../../config').default[process.env.NODE_ENV]
 
 export default ({ store }) => {
   /*
@@ -19,7 +19,7 @@ export default ({ store }) => {
     actionGroup.forEach(
       ({ name, type, description, updateFunction, uiEventFunction }) => {
         // check that type proper type is provided
-        if (type === undefined) {
+        if (type === undefined && !!updateFunction) {
           return console.log(
             [
               `You forgot to specify a type for action "${name ||
@@ -30,7 +30,7 @@ export default ({ store }) => {
             ].join("\n")
           );
         }
-        if (!allStoreBranches.includes(type)) {
+        if (!allStoreBranches.includes(type) && !!updateFunction) {
           return console.log(
             [
               `You chose "${type}" action type for action "${name ||
