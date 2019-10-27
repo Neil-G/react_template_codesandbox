@@ -122,7 +122,7 @@ class UserMenuNavItemComponent extends React.Component {
         <UserMenuItem
           onClick={() => {
             localStorage.removeItem('token')
-            return window.location.href = 'http://localhost:5678?action=logout'
+            return window.location.href = 'http://localhost:5678?logout=true'
           }}
         >
           <i className="fal fa-sign-out-alt" />
