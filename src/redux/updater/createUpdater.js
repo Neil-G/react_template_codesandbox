@@ -2,6 +2,8 @@ import axios from "axios";
 import updaterMethods from "./updaterMethods";
 import storeBranches from "./../store/storeBranches";
 const allStoreBranches = Object.keys(storeBranches);
+const config = require('../../config').default[process.env.NODE_ENV]
+
 export default ({ store }) => {
   /*
   |--------------------------------------------------------------------------
@@ -87,6 +89,20 @@ export default ({ store }) => {
       } = instructions;
 
       processActionGroup({ actionGroup: beforeActions, updaterMethod });
+
+      // append baseurl to url
+      if (config.baseUrl) {
+        serviceOptions.url = config.baseUrl + serviceOptions.url
+      }
+
+      // if token is found in local storage, include it in header
+      const token = localStorage.getItem('token')
+      if (!!token) {
+        if (!serviceOptions.headers) {
+          serviceOptions.headers = {}
+        }
+        serviceOptions.headers.token = token
+      }
 
       return axios(serviceOptions || {})
         .then(res => {
