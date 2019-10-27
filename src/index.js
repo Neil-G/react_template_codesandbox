@@ -2,6 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import routes from "./routes";
+import { loginWithToken } from './utils'
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +19,7 @@ import "./styles/index.css";
 */
 
 // TODO: extract to util function
-const urlParams = new URLSearchParams(window.location.search)
-const token = urlParams.get('token')
-if (!!token) {
-    localStorage.setItem('token', token)
-    window.history.replaceState({}, document.title, '/')
-}
+loginWithToken()
 
 /*
 |--------------------------------------------------------------------------
