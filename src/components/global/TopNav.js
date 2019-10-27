@@ -12,7 +12,7 @@ import {
 } from "./../../constants/urlPaths.js";
 import { globalLayout } from "./../../styles";
 import updater from "./../../redux/updater";
-
+import { logout } from './../../utils'
 const withClickOutside = require("react-click-outside");
 
 /*
@@ -119,12 +119,7 @@ class UserMenuNavItemComponent extends React.Component {
             Settings
           </UserMenuItem>
         </Link>
-        <UserMenuItem
-          onClick={() => {
-            localStorage.removeItem('token')
-            return window.location.href = 'http://localhost:5678?logout=true'
-          }}
-        >
+        <UserMenuItem onClick={logout}>
           <i className="fal fa-sign-out-alt" />
           Logout
         </UserMenuItem>
