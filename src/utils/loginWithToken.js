@@ -1,4 +1,5 @@
 import updater from './../redux/updater'
+import logout from './logout'
 
 const getTokenFromUrl = () => {
     // check url for token search param and store it if found
@@ -18,6 +19,8 @@ export default () => {
     const token = localStorage.getItem('token')
     if (!!token) {
         updater.loginWithToken()
+    } else {
+        logout()
     }
 
 }
