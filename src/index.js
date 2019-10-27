@@ -10,6 +10,8 @@ import { loginWithToken } from './utils'
 |--------------------------------------------------------------------------
 */
 
+import "./styles/normalize.css";
+import "./styles/skeleton.css";
 import "./styles/index.css";
 
 /*
