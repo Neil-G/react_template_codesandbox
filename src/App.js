@@ -49,12 +49,15 @@ class AppComponent extends React.Component {
   }
 
   render() {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, children } = this.props;
     return (
       <Container>
-        {isLoggedIn ? (
-          this.props.children
-        ) : (
+        {isLoggedIn ? ([
+          <TopNav />,
+          <PageContainer>{children}</PageContainer>,
+          <Footer />
+
+        ]) : (
           <FullScreenLoadingIndicator text="this is a loading indicator" />
         )}
       </Container>
@@ -64,7 +67,7 @@ class AppComponent extends React.Component {
 
 const App = withRouter(
   connect(state => ({
-    isLoggedIn: !!get(state, "session.user.id", true),
+    isLoggedIn: !!get(state, 'session.user.id'),
     user: get(state, "session.user", {})
   }))(AppComponent)
 );
@@ -79,11 +82,7 @@ export default ({ children }) => {
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <App>
-          <TopNav />
-          <PageContainer>{children}</PageContainer>
-          <Footer />
-        </App>
+        <App>{children}</App>
       </Provider>
     </BrowserRouter>
   );
