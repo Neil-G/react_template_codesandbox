@@ -1,3 +1,5 @@
+import { logout } from './../../../../utils'
+
 export default () => {
     return {
         updateType: 'api',
@@ -7,7 +9,7 @@ export default () => {
             data: {
                 query: `query {
                     getUserWithToken {
-                        id emailAddress
+                        id emailAddress token
                     }
                 }
                 `
@@ -15,10 +17,20 @@ export default () => {
         },
         successActions: [
             {
+                description: 'add user and session data to store and refresh token',
                 type: 'session',
                 updateFunction: ({ res }) => {
                     return { user: res.data.data.getUserWithToken }
+                },
+                uiEventFunction: ({ res }) => {
+                    const { token } = res.data.data.getUserWithToken 
+                    if (!!token) localStorage.setItem('token', token)
                 }
+            }
+        ],
+        failureActions: [
+            {
+                uiEventFunction: logout
             }
         ]
     }
