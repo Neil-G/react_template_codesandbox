@@ -2,7 +2,7 @@ import axios from "axios";
 import updaterMethods from "./updaterMethods";
 import storeBranches from "./../store/storeBranches";
 const allStoreBranches = Object.keys(storeBranches);
-const config = require('../../config').default[process.env.NODE_ENV]
+const config = require('../../config')[process.env.NODE_ENV]
 
 export default ({ store }) => {
   /*
