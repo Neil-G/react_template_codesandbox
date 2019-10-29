@@ -14,6 +14,10 @@ const Container = styled.div`
   padding: 0 10px;
 `
 
+const FormContainer = styled.div`
+  margin-bottom: 36px;
+`
+
 /*
 |--------------------------------------------------------------------------
 | React
@@ -26,12 +30,15 @@ class ProfilePage extends React.Component {
     return (
       <Container>
         <h5>Your Profile</h5>
+        <FormContainer>
+          <h3>General Info</h3>
+          <GeneralInfoForm user={user} />
+        </FormContainer>
+        <FormContainer>
+          <h3>Contact Info</h3>
+          <EmailForm user={user} />
+        </FormContainer>
 
-        <h2>General Info</h2>
-        <GeneralInfoForm user={user} />
-
-        <h2>Contact Info</h2>
-        <EmailForm user={user} />
       </Container>
     );
   }

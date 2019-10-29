@@ -9,7 +9,12 @@ export default () => {
             data: {
                 query: `query {
                     getUserWithToken {
-                        id emailAddress token
+                        id 
+                        emailAddress 
+                        token 
+                        firstName 
+                        lastName 
+                        userName
                     }
                 }
                 `

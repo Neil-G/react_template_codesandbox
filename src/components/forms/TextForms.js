@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { TextInput } from './TextInputs'
+import updater from './../../redux/updater'
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +19,30 @@ export class GeneralInfoForm extends Component {
         firstName: undefined,
         lastName: undefined,
         userName: undefined,
+        shouldSyncPropsAndState: false,
+        isUpdateInProgress: false,
+    }
+
+    _syncPropsAndState = () => {
+        const { user: { firstName, lastName, userName }} = this.props
+        this.setState({ firstName, lastName, userName })
     }
 
     componentDidMount() {
-        
+        this._syncPropsAndState()
     }
+
+    componentDidUpdate() {
+        const { shouldSyncPropsAndState } = this.state
+        if (shouldSyncPropsAndState) {
+            this._syncPropsAndState()
+            this.setState({ shouldSyncPropsAndState: false })
+        }
+    }
+
     render() {
-        const { firstName, lastName, userName } = this.state
+        const { firstName, lastName, userName, isUpdateInProgress } = this.state
+        const { user: { emailAddress }} = this.props
         return(
             <div>
                 <TextInput 
@@ -37,7 +55,7 @@ export class GeneralInfoForm extends Component {
                     label='First Name'
                     placeholder='your first name...'
                     value={firstName || ''}
-                    onChange={e => this.setState({ userName: e.target.value })}
+                    onChange={e => this.setState({ firstName: e.target.value })}
                 />
                 <TextInput 
                     label='Last Name'
@@ -45,7 +63,31 @@ export class GeneralInfoForm extends Component {
                     value={lastName || ''}
                     onChange={e => this.setState({ lastName: e.target.value })}
                 />
-                <button>update</button>
+                <button
+                    onClick={() => {
+                        this.setState({ isUpdateInProgress: true })
+                        updater.findOneUserAndUpdate({
+                            query: { emailAddress },
+                            updates: { firstName, lastName, userName },
+                            successActions: [
+                                {
+                                    description: 'update user general information on profile page',
+                                    type: 'session',
+                                    updateFunction: ({ res }, state) => {
+                                        const updates = res.data.data.findOneUserAndUpdate
+                                        const user = { ...state.user, ...updates }
+                                        return { ...state, user }
+                                    }
+                                }
+                            ]
+                        }).then(() => {
+                            this.setState({ isUpdateInProgress: false, shouldSyncPropsAndState: true })
+                        })
+                    }}
+                >{isUpdateInProgress ? 'updating...' : 'update' }</button>
+                <button onClick={this._syncPropsAndState}> 
+                    clear changes
+                </button>
             </div>
         )
     }
