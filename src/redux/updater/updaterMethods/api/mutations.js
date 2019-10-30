@@ -14,9 +14,10 @@ modelNames.forEach(modelName => {
 
     // findOneAndUpdate
     mutationName = `findOne${modelName}AndUpdate`
-    generatedMutationUpdaterMethods[mutationName] = ({ query, updates, successActions = [] }) => {
+    generatedMutationUpdaterMethods[mutationName] = function ({ query = {}, updates = {}, successActions = [] }) {
         return {
             updateType: 'api',
+            args: { query, updates, successActions }, 
             serviceOptions: {
                 method: 'post',
                 url: '/graphql',

@@ -11,6 +11,7 @@ import {
   UserProfile
 } from "./constants/urlPaths.js";
 import ProfilePage from "./components/pages/profile";
+import DocsPage from "./components/pages/docs";
 import App from "./App";
 
 /*
@@ -18,14 +19,15 @@ import App from "./App";
 | Pages Configuration
 |--------------------------------------------------------------------------
 */
-const redirects = [];
+export const redirects = [];
 
-const pages = [
+export const pages = [
   { path: rootPath },
   { path: Page1Path },
   { path: Page2Path },
   { path: SettingsPath },
-  { path: UserProfile, component: ProfilePage }
+  { path: UserProfile, component: ProfilePage },
+  { path: '/docs', component: DocsPage }
 ];
 
 /*
