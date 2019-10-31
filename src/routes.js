@@ -42,7 +42,7 @@ class RouteWithUtilsComponent extends React.Component {
     this._checkThatUerCanAccessThisRoute();
   }
 
-  _checkThatUerCanAccessThisRoute = () => {
+  _checkThatUserCanAccessThisRoute = () => {
     const {
       history: { push },
       location: { pathname }
