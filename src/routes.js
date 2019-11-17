@@ -42,6 +42,10 @@ class RouteWithUtilsComponent extends React.Component {
     this._checkThatUserCanAccessThisRoute();
   }
 
+  componentDidMount() {
+    this._checkThatUserCanAccessThisRoute();
+  }
+
   _checkThatUserCanAccessThisRoute = () => {
     const {
       history: { push },
