@@ -1,6 +1,7 @@
 import axios from "axios";
 import updaterMethods from "./updaterMethods";
 import storeBranches from "./../store/storeBranches";
+import { authTokenKey } from './../../constants/variableNames'
 const allStoreBranches = Object.keys(storeBranches);
 const config = require('../../config').default[process.env.NODE_ENV]
 
@@ -96,12 +97,12 @@ export default ({ store }) => {
       }
 
       // if token is found in local storage, include it in header
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem(authTokenKey)
       if (!!token) {
         if (!serviceOptions.headers) {
           serviceOptions.headers = {}
         }
-        serviceOptions.headers.token = token
+        serviceOptions.headers[authTokenKey] = token
       }
 
       return axios(serviceOptions || {})

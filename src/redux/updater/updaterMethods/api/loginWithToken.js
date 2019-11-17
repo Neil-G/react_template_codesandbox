@@ -1,4 +1,5 @@
 import { logout } from './../../../../utils'
+import { authTokenKey } from './../../../../constants/variableNames'
 
 export default () => {
     return {
@@ -11,7 +12,7 @@ export default () => {
                     getUserWithToken {
                         id 
                         emailAddress 
-                        token 
+                        ${authTokenKey}
                         firstName 
                         lastName 
                         userName
@@ -28,14 +29,18 @@ export default () => {
                     return { user: res.data.data.getUserWithToken }
                 },
                 uiEventFunction: ({ res }) => {
-                    const { token } = res.data.data.getUserWithToken 
-                    if (!!token) localStorage.setItem('token', token)
+                    const token = res.data.data.getUserWithToken[authTokenKey] 
+                    if (!!token) localStorage.setItem(authTokenKey, token)
                 }
             }
         ],
         failureActions: [
             {
-                uiEventFunction: logout
+                uiEventFunction: process.env.NODE_ENV === 'production'
+                    ? logout
+                    : () => {
+                        debugger
+                    }
             }
         ]
     }
