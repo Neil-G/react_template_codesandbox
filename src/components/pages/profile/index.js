@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { GeneralInfoForm, EmailForm } from './../../forms/TextForms'
+import { GeneralInfoForm, EmailForm, UserNameForm } from './../../forms/TextForms'
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -33,6 +33,10 @@ class ProfilePage extends React.Component {
         <FormContainer>
           <h3>General Info</h3>
           <GeneralInfoForm user={user} />
+        </FormContainer>
+        <FormContainer>
+          <h3>User Name</h3>
+          <UserNameForm user={user} />
         </FormContainer>
         <FormContainer>
           <h3>Contact Info</h3>

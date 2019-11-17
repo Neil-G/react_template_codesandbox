@@ -18,14 +18,13 @@ export class GeneralInfoForm extends Component {
     state = {
         firstName: undefined,
         lastName: undefined,
-        userName: undefined,
         shouldSyncPropsAndState: false,
         isUpdateInProgress: false,
     }
 
     _syncPropsAndState = () => {
-        const { user: { firstName, lastName, userName }} = this.props
-        this.setState({ firstName, lastName, userName })
+        const { user: { firstName, lastName, }} = this.props
+        this.setState({ firstName, lastName, })
     }
 
     componentDidMount() {
@@ -41,16 +40,10 @@ export class GeneralInfoForm extends Component {
     }
 
     render() {
-        const { firstName, lastName, userName, isUpdateInProgress } = this.state
+        const { firstName, lastName, isUpdateInProgress } = this.state
         const { user: { emailAddress }} = this.props
         return(
             <div>
-                <TextInput 
-                    label='Username'
-                    placeholder='your username...'
-                    value={userName || ''}
-                    onChange={e => this.setState({ userName: e.target.value })}
-                />
                 <TextInput 
                     label='First Name'
                     placeholder='your first name...'
@@ -68,7 +61,7 @@ export class GeneralInfoForm extends Component {
                         this.setState({ isUpdateInProgress: true })
                         updater.findOneUserAndUpdate({
                             query: { emailAddress },
-                            updates: { firstName, lastName, userName },
+                            updates: { firstName, lastName, },
                             successActions: [
                                 {
                                     description: 'update user general information on profile page',
@@ -119,7 +112,39 @@ export class EmailForm extends Component {
                     value={emailAddress || ''}
                     onChange={e => this.setState({ emailAddress: e.target.value })}
                 />
-                <button>Update</button>
+                <button>Update</button><button>clear changes</button>
+            </div>
+        )
+    }
+} 
+
+/*
+|--------------------------------------------------------------------------
+| Email Form
+|--------------------------------------------------------------------------
+*/
+
+export class UserNameForm extends Component {
+    state = {
+        userName: undefined
+    }
+
+    componentDidMount() {
+        const { user: { userName }} = this.props
+        this.setState({ userName })
+    }
+
+    render() {
+        const { userName } = this.state
+        return(
+            <div>
+                <TextInput 
+                    label='Username'
+                    placeholder='your username...'
+                    value={userName || ''}
+                    onChange={e => this.setState({ userName: e.target.value })}
+                />
+                <button>Update</button><button>clear changes</button>
             </div>
         )
     }
