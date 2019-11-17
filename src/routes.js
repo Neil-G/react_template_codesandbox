@@ -39,7 +39,7 @@ export const pages = [
 class RouteWithUtilsComponent extends React.Component {
   componentDidUpdate() {
     window.scrollTo(0, 0);
-    this._checkThatUerCanAccessThisRoute();
+    this._checkThatUserCanAccessThisRoute();
   }
 
   _checkThatUserCanAccessThisRoute = () => {
