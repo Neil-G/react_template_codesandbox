@@ -56,7 +56,6 @@ class AppComponent extends React.Component {
           <TopNav />,
           <PageContainer>{children}</PageContainer>,
           <Footer />
-
         ]) : (
           <FullScreenLoadingIndicator text="this is a loading indicator" />
         )}

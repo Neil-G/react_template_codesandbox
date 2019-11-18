@@ -1,8 +1,9 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
+import { get, noop } from 'lodash'
 import {
   rootPath,
   Page1Path,
@@ -22,6 +23,7 @@ const withClickOutside = require("react-click-outside");
 */
 
 const Container = styled.div`
+  background: white;
   position: fixed;
   top: 0;
   width: 100%;
@@ -29,6 +31,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   background: #ede7f6;
+  z-index: 1000;
 `;
 
 const SectionContainer = styled.div`
@@ -55,9 +58,31 @@ const TopNavItem = styled.div`
   > .logo {
     font-size: 30px;
   }
+  ${({ hideOnMobile }) => {
+    return hideOnMobile && `
+      @media (max-width: 540px) {
+        display: none;
+      }
+    `
+  }}
+  ${({ hideOnDesktop }) => {
+    return hideOnDesktop && `
+      @media (min-width: 540px) {
+        display: none;
+      }
+    `
+  }}
 `;
 
+
+/*
+|--------------------------------------------------------------------------
+| User Menu Component
+|--------------------------------------------------------------------------
+*/
+
 const UserMenuContainer = styled.div`
+  background: white;
   border: 1px solid rgba(0, 0, 0, 0.3);
   position: absolute;
   width: 200px;
@@ -67,6 +92,7 @@ const UserMenuContainer = styled.div`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 `;
 
 const UserMenuItem = styled.div`
@@ -83,13 +109,7 @@ const UserMenuItem = styled.div`
   }
 `;
 
-/*
-|--------------------------------------------------------------------------
-| User Menu Component
-|--------------------------------------------------------------------------
-*/
-
-class UserMenuNavItemComponent extends React.Component {
+class UserMenuComponent extends React.Component {
   handleClickOutside = evt => {
     if (evt.target.id !== "user-menu-toggle-icon") {
       this._closeMenu();
@@ -128,28 +148,91 @@ class UserMenuNavItemComponent extends React.Component {
   }
 }
 
-const UserMenuNavItem = withClickOutside(UserMenuNavItemComponent);
+const UserMenu = withClickOutside(UserMenuComponent);
 
 /*
 |--------------------------------------------------------------------------
-| TopNav component
+| Mobile Menu
+|--------------------------------------------------------------------------
+*/
+
+const MobileMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: white;
+  position: fixed;
+  top: ${globalLayout.topNavHeightPx};
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+`
+
+const MobileMenuItem = styled.div`
+  width: 100%;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 540px) {
+    display: none;
+  }
+`
+
+const mobileMenuItems = [
+  { label: 'Page 1', to: Page1Path },
+  { label: 'Page 2', to: Page2Path },
+  { label: 'Profile', to: UserProfile },
+  { label: 'Settings', to: SettingsPath },
+]
+
+const MobileMenu = ({ closeMobileMenu }) => {
+  return (
+    <MobileMenuContainer>
+      {
+        mobileMenuItems.map(({ label, to='/' }) => {
+          return (
+            <Link to={to} onClick={closeMobileMenu}>
+              <MobileMenuItem>{label}</MobileMenuItem>
+            </Link>
+          )
+        })
+      }
+      <MobileMenuItem onClick={logout}>Logout</MobileMenuItem>
+    </MobileMenuContainer>
+
+  )
+}
+
+/*
+|--------------------------------------------------------------------------
+| TopNav Component
 |--------------------------------------------------------------------------
 */
 const topNavItems = [
   { label: <i className="fal fa-robot logo" />, to: rootPath },
-  { label: "NavItem 1", to: Page1Path },
-  { label: "NavItem 2", to: Page2Path }
+  { label: "NavItem 1", to: Page1Path, hideOnMobile: true },
+  { label: "NavItem 2", to: Page2Path, hideOnMobile: true }
 ];
+
 class TopNav extends React.Component {
+  state = {
+    isMobileMenuOpen: false
+  }
   render() {
-    const { isUserMenuOpen } = this.props;
+    const { isUserMenuOpen, user } = this.props;
+    const { isMobileMenuOpen } = this.state
     return (
       <Container>
         {/* Left Section */}
         <SectionContainerLeft>
-          {topNavItems.map(({ label, to }) => {
+          {topNavItems.map(({ label, to, hideOnMobile }) => {
             return (
-              <TopNavItem key={label}>
+              <TopNavItem key={label} hideOnMobile={hideOnMobile}>
                 <Link to={to}>{label}</Link>
               </TopNavItem>
             );
@@ -158,7 +241,7 @@ class TopNav extends React.Component {
 
         {/* Right Section */}
         <SectionContainerRight>
-          <TopNavItem>
+          <TopNavItem hideOnMobile>
             <i className="fal fa-user-circle user-menu-icon" />
             <i
               id="user-menu-toggle-icon"
@@ -169,7 +252,11 @@ class TopNav extends React.Component {
                 });
               }}
             />
-            {isUserMenuOpen && <UserMenuNavItem />}
+            {isUserMenuOpen && <UserMenu user={user} />}
+          </TopNavItem>
+          <TopNavItem hideOnDesktop>
+            <i className={isMobileMenuOpen ? "fas fa-times" : "fas fa-bars"} onClick={() => this.setState({ isMobileMenuOpen: !isMobileMenuOpen})}></i>
+            {isMobileMenuOpen && <MobileMenu closeMobileMenu={() => this.setState({ isMobileMenuOpen: false })} />}
           </TopNavItem>
         </SectionContainerRight>
       </Container>
@@ -185,6 +272,7 @@ class TopNav extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    user: get(state, "session.user", {}),
     isUserMenuOpen: state.global.isOpen.topNav
   };
 };
