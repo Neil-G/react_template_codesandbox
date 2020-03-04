@@ -1,7 +1,8 @@
 import React from "react";
 import styled from 'styled-components'
+import { get } from 'lodash'
 import { connect } from 'react-redux'
-import { GeneralInfoForm, EmailForm, UserNameForm } from './../../forms/TextForms'
+import { UserInfoForm } from './../../forms/TextForms'
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -32,17 +33,8 @@ class ProfilePage extends React.Component {
         <h5>Your Profile</h5>
         <FormContainer>
           <h3>General Info</h3>
-          <GeneralInfoForm user={user} />
+          <UserInfoForm user={user} />
         </FormContainer>
-        <FormContainer>
-          <h3>User Name</h3>
-          <UserNameForm user={user} />
-        </FormContainer>
-        <FormContainer>
-          <h3>Contact Info</h3>
-          <EmailForm user={user} />
-        </FormContainer>
-
       </Container>
     );
   }
@@ -54,9 +46,9 @@ class ProfilePage extends React.Component {
 |--------------------------------------------------------------------------
 */
 
-const mapStateToProps = ({ session: { user }}) => {
+const mapStateToProps = state => {
   return {
-    user
+    user: get(state.users, state.session.userId, {})
   }
 }
 

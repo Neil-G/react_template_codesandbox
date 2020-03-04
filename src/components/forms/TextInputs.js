@@ -6,7 +6,7 @@ import {
     faCheck,
     faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons'
-
+import { FormInputLabel } from "./StyledComponents";
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -14,7 +14,7 @@ import {
 */
 
 const TextInputContainer = styled.div`
-  width: ${({ width }) => width || '100%'};
+  width: 100%;
   position: relative;
   box-sizing: border-box;
   margin-bottom: 14px;
@@ -60,16 +60,9 @@ export const TextInput = ({
   }) => {
     return (
       <TextInputContainer width={width}>
-        <label
-          style={{
-            fontSize: '14px',
-            display: 'block',
-            width: '100%',
-            ...labelStyle,
-          }}
-        >
+        <FormInputLabel>
           {label}
-        </label>
+        </FormInputLabel>
         <StyledTextInput
           style={inputStyle}
           disabled={disabled}
@@ -110,7 +103,7 @@ export const TextInput = ({
     return (
       <TextInputContainer width={width}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div style={{ fontSize: '14px' }}>{label}</div>
+          <FormInputLabel>{label}</FormInputLabel>
           <div>
             {!!characterCountLimit && (
               <div style={{ fontSize: '14px' }}>
