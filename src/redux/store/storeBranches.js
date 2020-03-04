@@ -11,8 +11,10 @@ const global = {
 };
 
 const session = {
-  user: {}
+  userId: null
 };
+
+const users = {}
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +24,6 @@ const session = {
 
 export default {
   global,
-  session
+  session,
+  users,
 };

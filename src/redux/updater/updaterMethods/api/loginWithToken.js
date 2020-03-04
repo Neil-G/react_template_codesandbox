@@ -23,10 +23,19 @@ export default () => {
         },
         successActions: [
             {
-                description: 'add user and session data to store and refresh token',
+                description: 'add user to users store branch',
+                type: 'users',
+                updateFunction: ({ res }, state) => {
+                    const user = res.data.data.getUserWithToken
+                    state[user.id] = user
+                    return { ...state }
+                }
+            },
+            {
+                description: 'add userId to session',
                 type: 'session',
                 updateFunction: ({ res }) => {
-                    return { user: res.data.data.getUserWithToken }
+                    return { userId: res.data.data.getUserWithToken.id }
                 },
                 uiEventFunction: ({ res }) => {
                     const token = res.data.data.getUserWithToken[authTokenKey] 

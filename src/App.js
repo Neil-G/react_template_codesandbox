@@ -66,8 +66,7 @@ class AppComponent extends React.Component {
 
 const App = withRouter(
   connect(state => ({
-    isLoggedIn: !!get(state, 'session.user.id'),
-    user: get(state, "session.user", {})
+    isLoggedIn: state.session.userId,
   }))(AppComponent)
 );
 
