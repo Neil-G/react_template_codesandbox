@@ -116,6 +116,7 @@ export default ({ store }) => {
           return res;
         })
         .catch(error => {
+          console.log(error)
           processActionGroup({
             error,
             actionGroup: failureActions,
