@@ -12,6 +12,8 @@ export default () => {
                     getUserWithToken {
                         id 
                         emailAddress 
+                        isFacebookAccountConnected
+                        isGoogleAccountConnected
                         ${authTokenKey}
                         firstName 
                         lastName 
