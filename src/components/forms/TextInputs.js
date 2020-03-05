@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import get from 'lodash'
+import { get, noop } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCheck,
@@ -17,7 +17,6 @@ const TextInputContainer = styled.div`
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  margin-bottom: 14px;
 `
 
 const StyledTextInput = styled.input`
@@ -57,7 +56,10 @@ export const TextInput = ({
     isValid,
     disabled = false,
     inputStyle = {},
+    handleSaveChange,
+    lastSavedValue,
   }) => {
+    const [isSaving, setIsSaving] = useState(false)
     return (
       <TextInputContainer width={width}>
         <FormInputLabel>
@@ -72,6 +74,13 @@ export const TextInput = ({
           type={type}
           value={value}
           onChange={!!onChange && onChange}
+          onBlur={async () => {
+            if (!!handleSaveChange && value !== lastSavedValue) {
+              setIsSaving(true)
+              await handleSaveChange()
+              setIsSaving(false)
+            }
+          }}
         />
         {isValid === true && (
           <FontAwesomeIcon
