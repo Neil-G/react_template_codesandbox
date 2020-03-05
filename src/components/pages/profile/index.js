@@ -28,6 +28,7 @@ const FormContainer = styled.div`
 class ProfilePage extends React.Component {
   render() {
     const { user } = this.props
+    const { isFacebookAccountConnected, isGoogleAccountConnected } = user
     return (
       <Container>
         <h5>Your Profile</h5>
@@ -35,6 +36,9 @@ class ProfilePage extends React.Component {
           <h3>General Info</h3>
           <UserInfoForm user={user} />
         </FormContainer>
+        <div>{isFacebookAccountConnected && 'Facebook account is connected'}</div>
+        <div>{isGoogleAccountConnected && 'Google account is connected'}</div>
+        <div></div>
       </Container>
     );
   }
