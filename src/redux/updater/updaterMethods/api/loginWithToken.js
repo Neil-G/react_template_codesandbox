@@ -14,6 +14,7 @@ export default () => {
                         emailAddress 
                         isFacebookAccountConnected
                         isGoogleAccountConnected
+                        isGithubAccountConnected
                         ${authTokenKey}
                         firstName 
                         lastName 
