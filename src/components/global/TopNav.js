@@ -16,6 +16,7 @@ import {
   forumPageConfig,
   profilePageConfig,
 } from './../../configs/pages'
+import { snow, light } from './../../styles/colors'
 const withClickOutside = require('react-click-outside')
 
 /*
@@ -26,13 +27,13 @@ const withClickOutside = require('react-click-outside')
 
 const Container = styled.div`
   background: white;
+  border-bottom: 1px solid ${light};
   position: fixed;
   top: 0;
   width: 100%;
   height: ${globalLayout.topNavHeightPx};
   display: flex;
   justify-content: space-between;
-  background: #ede7f6;
   z-index: 1000;
 `
 
