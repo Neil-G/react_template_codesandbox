@@ -13,6 +13,7 @@ import {
   searchPageConfig,
   managePageConfig,
   messagesPageConfig,
+  forumPageConfig,
   profilePageConfig,
 } from './../../configs/pages'
 const withClickOutside = require('react-click-outside')
@@ -217,6 +218,7 @@ const desktopNavItems = [
   searchPageConfig,
   managePageConfig,
   messagesPageConfig,
+  forumPageConfig,
   profilePageConfig,
 ]
 /*
