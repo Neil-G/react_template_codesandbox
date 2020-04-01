@@ -3,12 +3,14 @@ import {
   SEARCH_PATH,
   PROFILE_PAGE_PATH,
   MANAGE_PAGE_PATH,
+  MESSAGES_PAGE_PATH,
 } from './../constants/urlPaths'
 import {
   HomePage,
   ProfilePage,
   SearchPage,
   ManagePage,
+  MessagesPage,
 } from './../components/pages'
 
 export const homePageConfig = {
@@ -29,6 +31,12 @@ export const managePageConfig = {
   PageComponent: ManagePage,
 }
 
+export const messagesPageConfig = {
+  label: 'Messages',
+  path: MESSAGES_PAGE_PATH,
+  PageComponent: MessagesPage,
+}
+
 export const profilePageConfig = {
   label: 'Profile',
   path: PROFILE_PAGE_PATH,
@@ -39,5 +47,6 @@ export default [
   homePageConfig,
   searchPageConfig,
   managePageConfig,
+  messagesPageConfig,
   profilePageConfig,
 ]
