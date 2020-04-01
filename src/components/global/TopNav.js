@@ -1,20 +1,20 @@
-import React from "react";
-import styled, { css } from "styled-components";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
+import React from 'react'
+import styled, { css } from 'styled-components'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 import { get, noop } from 'lodash'
-import {
-  rootPath,
-  Page1Path,
-  Page2Path,
-  SettingsPath,
-  UserProfile
-} from "./../../constants/urlPaths.js";
-import { globalLayout } from "./../../styles";
-import updater from "./../../redux/updater";
+import { SettingsPath, PROFILE_PAGE_PATH } from './../../constants/urlPaths.js'
+import { globalLayout } from './../../styles'
+import updater from './../../redux/updater'
 import { logout } from './../../utils'
-const withClickOutside = require("react-click-outside");
+import {
+  homePageConfig,
+  searchPageConfig,
+  managePageConfig,
+  profilePageConfig,
+} from './../../configs/pages'
+const withClickOutside = require('react-click-outside')
 
 /*
 |--------------------------------------------------------------------------
@@ -32,15 +32,15 @@ const Container = styled.div`
   justify-content: space-between;
   background: #ede7f6;
   z-index: 1000;
-`;
+`
 
 const SectionContainer = styled.div`
   display: flex;
-`;
+`
 
-const SectionContainerLeft = styled(SectionContainer)``;
+const SectionContainerLeft = styled(SectionContainer)``
 
-const SectionContainerRight = styled(SectionContainer)``;
+const SectionContainerRight = styled(SectionContainer)``
 
 const TopNavItem = styled.div`
   display: flex;
@@ -59,21 +59,26 @@ const TopNavItem = styled.div`
     font-size: 30px;
   }
   ${({ hideOnMobile }) => {
-    return hideOnMobile && `
+    return (
+      hideOnMobile &&
+      `
       @media (max-width: 540px) {
         display: none;
       }
     `
+    )
   }}
   ${({ hideOnDesktop }) => {
-    return hideOnDesktop && `
+    return (
+      hideOnDesktop &&
+      `
       @media (min-width: 540px) {
         display: none;
       }
     `
+    )
   }}
-`;
-
+`
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +98,7 @@ const UserMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 1000;
-`;
+`
 
 const UserMenuItem = styled.div`
   height: 60px;
@@ -107,48 +112,48 @@ const UserMenuItem = styled.div`
   > i {
     margin-right: 9px;
   }
-`;
+`
 
 class UserMenuComponent extends React.Component {
   handleClickOutside = evt => {
-    if (evt.target.id !== "user-menu-toggle-icon") {
-      this._closeMenu();
+    if (evt.target.id !== 'user-menu-toggle-icon') {
+      this._closeMenu()
     }
-  };
+  }
 
   _closeMenu = () => {
     updater.toggleOpenGlobal({
-      componentName: "topNav",
-      shouldOpenComponent: false
-    });
-  };
+      componentName: 'topNav',
+      shouldOpenComponent: false,
+    })
+  }
 
   render() {
     return (
       <UserMenuContainer>
         <UserMenuItem>signed in as UserName</UserMenuItem>
-        <Link to={UserProfile} onClick={() => this._closeMenu()}>
+        <Link to={PROFILE_PAGE_PATH} onClick={() => this._closeMenu()}>
           <UserMenuItem>
-            <i className="fal fa-id-card" />
+            <i className='fal fa-id-card' />
             Your Profile
           </UserMenuItem>
         </Link>
         <Link to={SettingsPath} onClick={() => this._closeMenu()}>
           <UserMenuItem>
-            <i className="fal fa-cog" />
+            <i className='fal fa-cog' />
             Settings
           </UserMenuItem>
         </Link>
         <UserMenuItem onClick={logout}>
-          <i className="fal fa-sign-out-alt" />
+          <i className='fal fa-sign-out-alt' />
           Logout
         </UserMenuItem>
       </UserMenuContainer>
-    );
+    )
   }
 }
 
-const UserMenu = withClickOutside(UserMenuComponent);
+const UserMenu = withClickOutside(UserMenuComponent)
 
 /*
 |--------------------------------------------------------------------------
@@ -174,7 +179,7 @@ const MobileMenuContainer = styled.div`
 const MobileMenuItem = styled.div`
   width: 100%;
   padding: 20px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -183,84 +188,99 @@ const MobileMenuItem = styled.div`
   }
 `
 
-const mobileMenuItems = [
-  { label: 'Page 1', to: Page1Path },
-  { label: 'Page 2', to: Page2Path },
-  { label: 'Profile', to: UserProfile },
-  { label: 'Settings', to: SettingsPath },
-]
+const mobileMenuItems = []
 
 const MobileMenu = ({ closeMobileMenu }) => {
   return (
     <MobileMenuContainer>
-      {
-        mobileMenuItems.map(({ label, to='/' }) => {
-          return (
-            <Link to={to} onClick={closeMobileMenu}>
-              <MobileMenuItem>{label}</MobileMenuItem>
-            </Link>
-          )
-        })
-      }
+      {mobileMenuItems.map(({ label, to = '/' }) => {
+        return (
+          <Link to={to} onClick={closeMobileMenu}>
+            <MobileMenuItem>{label}</MobileMenuItem>
+          </Link>
+        )
+      })}
       <MobileMenuItem onClick={logout}>Logout</MobileMenuItem>
     </MobileMenuContainer>
-
   )
 }
 
 /*
 |--------------------------------------------------------------------------
+| Nav Items
+|--------------------------------------------------------------------------
+*/
+
+const desktopNavItems = [
+  homePageConfig,
+  searchPageConfig,
+  managePageConfig,
+  profilePageConfig,
+]
+/*
+|--------------------------------------------------------------------------
 | TopNav Component
 |--------------------------------------------------------------------------
 */
-const topNavItems = [
-  { label: <i className="fal fa-robot logo" />, to: rootPath },
-  { label: "NavItem 1", to: Page1Path, hideOnMobile: true },
-  { label: "NavItem 2", to: Page2Path, hideOnMobile: true }
-];
 
 class TopNav extends React.Component {
   state = {
-    isMobileMenuOpen: false
+    isMobileMenuOpen: false,
   }
   render() {
-    const { isUserMenuOpen, user } = this.props;
+    const { isUserMenuOpen, user } = this.props
     const { isMobileMenuOpen } = this.state
     return (
       <Container>
         {/* Left Section */}
         <SectionContainerLeft>
-          {topNavItems.map(({ label, to, hideOnMobile }) => {
+          <TopNavItem key='logo'>
+            <Link to={'/'}>
+              <i className='fal fa-robot logo' />
+            </Link>
+          </TopNavItem>
+          {desktopNavItems.map(({ label, path }) => {
             return (
-              <TopNavItem key={label} hideOnMobile={hideOnMobile}>
-                <Link to={to}>{label}</Link>
+              <TopNavItem key={label}>
+                <Link to={path}>{label}</Link>
               </TopNavItem>
-            );
+            )
           })}
         </SectionContainerLeft>
 
         {/* Right Section */}
         <SectionContainerRight>
           <TopNavItem hideOnMobile>
-            <i className="fal fa-user-circle user-menu-icon" />
+            <i className='fal fa-user-circle user-menu-icon' />
             <i
-              id="user-menu-toggle-icon"
-              className="fas fa-caret-down user-menu-dropdown"
+              id='user-menu-toggle-icon'
+              className='fas fa-caret-down user-menu-dropdown'
               onClick={() => {
                 updater.toggleOpenGlobal({
-                  componentName: "topNav"
-                });
+                  componentName: 'topNav',
+                })
               }}
             />
             {isUserMenuOpen && <UserMenu user={user} />}
           </TopNavItem>
           <TopNavItem hideOnDesktop>
-            <i className={isMobileMenuOpen ? "fas fa-times" : "fas fa-bars"} onClick={() => this.setState({ isMobileMenuOpen: !isMobileMenuOpen})}></i>
-            {isMobileMenuOpen && <MobileMenu closeMobileMenu={() => this.setState({ isMobileMenuOpen: false })} />}
+            <i
+              className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
+              onClick={() =>
+                this.setState({ isMobileMenuOpen: !isMobileMenuOpen })
+              }
+            ></i>
+            {isMobileMenuOpen && (
+              <MobileMenu
+                closeMobileMenu={() =>
+                  this.setState({ isMobileMenuOpen: false })
+                }
+              />
+            )}
           </TopNavItem>
         </SectionContainerRight>
       </Container>
-    );
+    )
   }
 }
 
@@ -272,9 +292,9 @@ class TopNav extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: get(state, "session.user", {}),
-    isUserMenuOpen: state.global.isOpen.topNav
-  };
-};
+    user: get(state, 'session.user', {}),
+    isUserMenuOpen: state.global.isOpen.topNav,
+  }
+}
 
-export default withRouter(connect(mapStateToProps)(TopNav));
+export default withRouter(connect(mapStateToProps)(TopNav))
