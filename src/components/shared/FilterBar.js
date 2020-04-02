@@ -1,12 +1,14 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
+import Modal from './Modal'
 import {
   TOP_NAV_HEIGHT,
   SEARCH_BAR_DESKTOP_WIDTH,
 } from './../../styles/globalLayout'
+import Panel from './Panel'
 import { light } from './../../styles/colors'
 
-const Container = styled.div`
+const DesktopContainer = styled.div`
   border-right: 1px solid ${light};
   background: white;
   position: fixed;
@@ -15,6 +17,9 @@ const Container = styled.div`
   bottom: 0;
   overflow-y: scroll;
   width: ${SEARCH_BAR_DESKTOP_WIDTH}px;
+  @media (max-width: 720px) {
+    display: none;
+  }
 `
 
 /*
@@ -23,15 +28,40 @@ const Container = styled.div`
 |--------------------------------------------------------------------------
 */
 
-export default class FilterBar extends React.Component {
+export class Filter extends React.Component {
   render() {
     return (
-      <Container>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>Filters</div>
-          <div>Reset all</div>
-        </div>
-      </Container>
+      <div>
+        <Panel.Section>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>Filters</div>
+            <div>Reset all</div>
+          </div>
+        </Panel.Section>
+      </div>
     )
   }
+}
+
+export class DesktopFilterBar extends React.Component {
+  render() {
+    return (
+      <DesktopContainer>
+        <Filter />
+      </DesktopContainer>
+    )
+  }
+}
+
+export const MobileFilterBar = ({ title = '', isOpen = false, closeModal }) => {
+  return (
+    <Modal isOpen={isOpen} title={title} closeModal={closeModal}>
+      <Filter />
+    </Modal>
+  )
+}
+
+export default {
+  Desktop: DesktopFilterBar,
+  Mobile: MobileFilterBar,
 }
