@@ -15,6 +15,7 @@ import {
   messagesPageConfig,
   forumPageConfig,
   profilePageConfig,
+  itemsPageConfig,
 } from './../../configs/pages'
 import { light } from './../../styles/colors'
 const withClickOutside = require('react-click-outside')
@@ -205,6 +206,7 @@ const MobileNavItem = styled.div`
 const mobileMenuItems = [
   homePageConfig,
   searchPageConfig,
+  itemsPageConfig,
   managePageConfig,
   messagesPageConfig,
   forumPageConfig,
@@ -235,6 +237,7 @@ const MobileMenu = ({ closeMobileMenu }) => {
 const desktopNavItems = [
   homePageConfig,
   searchPageConfig,
+  itemsPageConfig,
   managePageConfig,
   messagesPageConfig,
   forumPageConfig,

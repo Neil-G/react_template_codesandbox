@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import get from 'lodash.get'
 import App from './App'
-import allPageConfigs from './configs/pages'
+import { allPageConfigs } from './configs/pages'
 
 /*
 |--------------------------------------------------------------------------

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
 import Page from './../../shared/Page'
+import { itemsPageConfig } from './../../../configs/pages'
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +19,21 @@ const Container = styled.div``
 |--------------------------------------------------------------------------
 */
 
-class HomePage extends React.Component {
+class ItemsPage extends React.Component {
   render() {
     return (
       <Page.Container>
         <Page.ContentContainer>
-          <Page.Title>Home</Page.Title>
+          <Page.Title>Items</Page.Title>
+          <Page.Nav
+            rootPath={itemsPageConfig.path}
+            navItems={[
+              { label: 'public', count: 10 },
+              { label: 'draft', count: 25 },
+              { label: 'archived', count: 15 },
+              { label: 'all', count: 5 },
+            ]}
+          />
         </Page.ContentContainer>
       </Page.Container>
     )
@@ -42,4 +52,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(HomePage)
+export default connect(mapStateToProps)(ItemsPage)

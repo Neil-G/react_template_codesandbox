@@ -8,6 +8,7 @@ export const MANAGE_PAGE_PATH = [ROOT_URL_PATH, 'manage'].join('/')
 export const MESSAGES_PAGE_PATH = [ROOT_URL_PATH, 'messages'].join('/')
 export const FORUM_PAGE_PATH = [ROOT_URL_PATH, 'forum'].join('/')
 export const PROFILE_PAGE_PATH = [ROOT_URL_PATH, 'profile'].join('/')
+export const ITEMS_PAGE_PATH = [ROOT_URL_PATH, 'items'].join('/')
 
 // Search Page Paths
 export const SEARCH_PAGE_SUBPATHS = {

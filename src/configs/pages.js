@@ -7,6 +7,7 @@ import {
   FORUM_PAGE_PATH,
   SEARCH_PAGE_SUBPATHS,
   MESSAGE_PAGE_SUBPATHS,
+  ITEMS_PAGE_PATH,
 } from './../constants/urlPaths'
 import {
   HomePage,
@@ -15,6 +16,7 @@ import {
   ManagePage,
   MessagesPage,
   ForumPage,
+  ItemsPage,
 } from './../components/pages'
 
 export const homePageConfig = {
@@ -66,6 +68,12 @@ export const profilePageConfig = {
   PageComponent: ProfilePage,
 }
 
+export const itemsPageConfig = {
+  label: 'Items',
+  path: ITEMS_PAGE_PATH,
+  PageComponent: ItemsPage,
+}
+
 export const allPageConfigs = [
   homePageConfig,
   searchPageConfig,
@@ -73,13 +81,5 @@ export const allPageConfigs = [
   messagesPageConfig,
   forumPageConfig,
   profilePageConfig,
-]
-
-export default [
-  homePageConfig,
-  searchPageConfig,
-  managePageConfig,
-  messagesPageConfig,
-  forumPageConfig,
-  profilePageConfig,
+  itemsPageConfig,
 ]
