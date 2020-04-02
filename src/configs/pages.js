@@ -6,6 +6,7 @@ import {
   MESSAGES_PAGE_PATH,
   FORUM_PAGE_PATH,
   SEARCH_PAGE_SUBPATHS,
+  MESSAGE_PAGE_SUBPATHS,
 } from './../constants/urlPaths'
 import {
   HomePage,
@@ -45,6 +46,12 @@ export const messagesPageConfig = {
   label: 'Messages',
   path: MESSAGES_PAGE_PATH,
   PageComponent: MessagesPage,
+  redirects: [
+    {
+      from: MESSAGES_PAGE_PATH,
+      to: [MESSAGES_PAGE_PATH, MESSAGE_PAGE_SUBPATHS.NEW].join('/'),
+    },
+  ],
 }
 
 export const forumPageConfig = {
