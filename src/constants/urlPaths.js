@@ -16,3 +16,12 @@ export const SEARCH_PAGE_SUBPATHS = {
   SAVED: 'saved',
   ALL: 'all',
 }
+
+// Message Page Paths
+export const MESSAGE_PAGE_SUBPATHS = {
+  NEW: 'new',
+  READ: 'read',
+  SAVED: 'saved',
+  ARCHIVED: 'archived',
+  ALL: 'all',
+}
