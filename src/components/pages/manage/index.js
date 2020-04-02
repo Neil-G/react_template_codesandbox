@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
-import { UserInfoForm } from './../../forms/TextForms'
+import SelectInput from './../../forms/SelectInput'
+import Page from './../../shared/Page'
+
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -20,9 +22,21 @@ const Container = styled.div``
 class ManagePage extends React.Component {
   render() {
     return (
-      <Container>
-        <h5>Manage</h5>
-      </Container>
+      <Page.Container>
+        <Page.ContentContainer>
+          <Page.Title>Manage</Page.Title>
+          <div style={{ maxWidth: '180px' }}>
+            <SelectInput
+              options={[
+                { label: 'Needs Review', value: 'review' },
+                { label: 'In Contact', value: 'contact' },
+                { label: 'References ', value: 'reference' },
+                { label: 'Sale ', value: 'sale' },
+              ]}
+            />
+          </div>
+        </Page.ContentContainer>
+      </Page.Container>
     )
   }
 }
