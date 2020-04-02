@@ -1,8 +1,11 @@
-import React from "react";
+import React from 'react'
 import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
 import { UserInfoForm } from './../../forms/TextForms'
+import Panel from './../../shared/Panel'
+import Page from './../../shared/Page'
+
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -28,20 +31,37 @@ const FormContainer = styled.div`
 class ProfilePage extends React.Component {
   render() {
     const { user } = this.props
-    const { isFacebookAccountConnected, isGoogleAccountConnected, isGithubAccountConnected } = user
+    const {
+      isFacebookAccountConnected,
+      isGoogleAccountConnected,
+      isGithubAccountConnected,
+    } = user
     return (
-      <Container>
-        <h5>Your Profile</h5>
-        <FormContainer>
-          <h3>General Info</h3>
-          <UserInfoForm user={user} />
-        </FormContainer>
-        <div>{isFacebookAccountConnected && 'Facebook account is connected'}</div>
-        <div>{isGoogleAccountConnected && 'Google account is connected'}</div>
-        <div>{isGithubAccountConnected && 'Github account is connected'}</div>
-        <div></div>
-      </Container>
-    );
+      <Page.Container>
+        <Page.ContentContainer maxWidth='720'>
+          <Page.Title>Your Profile</Page.Title>
+          <Panel.Container>
+            <Panel.Section>
+              <h3>General Info</h3>
+            </Panel.Section>
+            <Panel.Section>
+              <UserInfoForm user={user} />
+            </Panel.Section>
+            <Panel.Section>
+              <div>
+                {isFacebookAccountConnected && 'Facebook account is connected'}
+              </div>
+              <div>
+                {isGoogleAccountConnected && 'Google account is connected'}
+              </div>
+              <div>
+                {isGithubAccountConnected && 'Github account is connected'}
+              </div>
+            </Panel.Section>
+          </Panel.Container>
+        </Page.ContentContainer>
+      </Page.Container>
+    )
   }
 }
 
@@ -53,7 +73,7 @@ class ProfilePage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: get(state.users, state.session.userId, {})
+    user: get(state.users, state.session.userId, {}),
   }
 }
 
