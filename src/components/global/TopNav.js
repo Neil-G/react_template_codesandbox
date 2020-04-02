@@ -37,20 +37,25 @@ const Container = styled.div`
   z-index: 1000;
 `
 
-const SectionContainer = styled.div`
+const DesktopNavItemContainer = styled.div`
   display: flex;
+  @media (max-width: 720px) {
+    display: none;
+  }
 `
 
-const SectionContainerLeft = styled(SectionContainer)``
-
-const SectionContainerRight = styled(SectionContainer)``
-
-const TopNavItem = styled.div`
+const NavItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 16px;
   position: relative;
+  border-bottom: 4px solid white;
+
+  a {
+    color: #2b2d42;
+    text-decoration: none;
+  }
   > .user-menu-icon {
     font-size: 30px;
   }
@@ -58,36 +63,32 @@ const TopNavItem = styled.div`
     margin-left: 8px;
     cursor: pointer;
   }
-  > .logo {
-    font-size: 30px;
-  }
-  ${({ hideOnMobile }) => {
+  ${({ isActive }) => {
     return (
-      hideOnMobile &&
+      isActive &&
+      css`
+        border-bottom: 4px solid tomato;
+        box-sizing: border-box;
       `
-      @media (max-width: 540px) {
-        display: none;
-      }
-    `
-    )
-  }}
-  ${({ hideOnDesktop }) => {
-    return (
-      hideOnDesktop &&
-      `
-      @media (min-width: 540px) {
-        display: none;
-      }
-    `
     )
   }}
 `
 
 /*
 |--------------------------------------------------------------------------
-| User Menu Component
+| User Menu
 |--------------------------------------------------------------------------
 */
+
+const UserMenuButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 18px;
+  @media (max-width: 720px) {
+    display: none;
+  }
+`
 
 const UserMenuContainer = styled.div`
   background: white;
@@ -164,6 +165,16 @@ const UserMenu = withClickOutside(UserMenuComponent)
 |--------------------------------------------------------------------------
 */
 
+const MobileMenuButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 18px;
+  @media (min-width: 720px) {
+    display: none;
+  }
+`
+
 const MobileMenuContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -180,7 +191,7 @@ const MobileMenuContainer = styled.div`
   }
 `
 
-const MobileMenuItem = styled.div`
+const MobileNavItem = styled.div`
   width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -191,9 +202,33 @@ const MobileMenuItem = styled.div`
     display: none;
   }
 `
+const mobileMenuItems = [
+  homePageConfig,
+  searchPageConfig,
+  managePageConfig,
+  messagesPageConfig,
+  forumPageConfig,
+  profilePageConfig,
+]
+
+const MobileMenu = ({ closeMobileMenu }) => {
+  return (
+    <MobileMenuContainer>
+      {mobileMenuItems.map(({ label, path }) => {
+        return (
+          <Link to={path} onClick={closeMobileMenu}>
+            <MobileNavItem>{label}</MobileNavItem>
+          </Link>
+        )
+      })}
+      <MobileNavItem onClick={logout}>Logout</MobileNavItem>
+    </MobileMenuContainer>
+  )
+}
+
 /*
 |--------------------------------------------------------------------------
-| Nav Items
+| TopNav Component
 |--------------------------------------------------------------------------
 */
 
@@ -206,102 +241,74 @@ const desktopNavItems = [
   profilePageConfig,
 ]
 
-const mobileMenuItems = [
-  homePageConfig,
-  searchPageConfig,
-  managePageConfig,
-  messagesPageConfig,
-  forumPageConfig,
-  profilePageConfig,
-]
-
-/*
-|--------------------------------------------------------------------------
-| Mobile Nav Items
-|--------------------------------------------------------------------------
-*/
-
-const MobileMenu = ({ closeMobileMenu }) => {
-  return (
-    <MobileMenuContainer>
-      {mobileMenuItems.map(({ label, path }) => {
-        return (
-          <Link to={path} onClick={closeMobileMenu}>
-            <MobileMenuItem>{label}</MobileMenuItem>
-          </Link>
-        )
-      })}
-      <MobileMenuItem onClick={logout}>Logout</MobileMenuItem>
-    </MobileMenuContainer>
-  )
-}
-
-/*
-|--------------------------------------------------------------------------
-| TopNav Component
-|--------------------------------------------------------------------------
-*/
-
 class TopNav extends React.Component {
   state = {
     isMobileMenuOpen: false,
   }
   render() {
-    const { isUserMenuOpen, user } = this.props
+    const {
+      isUserMenuOpen,
+      user,
+      location: { pathname },
+    } = this.props
     const { isMobileMenuOpen } = this.state
+
     return (
       <Container>
-        {/* Left Section */}
-        <SectionContainerLeft>
-          {/* Logo */}
-          <TopNavItem key='logo'>
-            <Link to={'/'}>
-              <i className='fal fa-robot logo' />
-            </Link>
-          </TopNavItem>
+        {/* Logo */}
+        <NavItem key='logo'>
+          <Link to={homePageConfig.path}>
+            <i className='fal fa-robot logo' />
+          </Link>
+        </NavItem>
+
+        {/* Center Nav Options */}
+        <DesktopNavItemContainer>
           {/*  NDesktop Nav Items */}
           {desktopNavItems.map(({ label, path }) => {
+            console.log(pathname, path)
             return (
-              <TopNavItem key={label} hideOnMobile>
+              <NavItem key={label} isActive={pathname.includes(path)}>
                 <Link to={path}>{label}</Link>
-              </TopNavItem>
+              </NavItem>
             )
           })}
-        </SectionContainerLeft>
+        </DesktopNavItemContainer>
 
-        {/* Right Section */}
-        <SectionContainerRight>
-          {/* User Menu */}
-          <TopNavItem hideOnMobile>
-            <i className='fal fa-user-circle user-menu-icon' />
-            <i
-              id='user-menu-toggle-icon'
-              className='fas fa-caret-down user-menu-dropdown'
-              onClick={() => {
-                updater.toggleOpenGlobal({
-                  componentName: 'topNav',
-                })
-              }}
+        {/* Desktop User Menu */}
+        <UserMenuButtonContainer>
+          <i
+            className='fal fa-user-circle user-menu-icon'
+            style={{ marginRight: '8px', fontSize: '1.5em' }}
+          />
+          <i
+            id='user-menu-toggle-icon'
+            className='fas fa-caret-down user-menu-dropdown'
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              updater.toggleOpenGlobal({
+                componentName: 'topNav',
+              })
+            }}
+          />
+          {isUserMenuOpen && <UserMenu user={user} />}
+        </UserMenuButtonContainer>
+
+        {/* Mobile hamburger menu button */}
+        <MobileMenuButtonContainer>
+          <i
+            className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
+            style={{ cursor: 'pointer' }}
+            onClick={() =>
+              this.setState({ isMobileMenuOpen: !isMobileMenuOpen })
+            }
+          ></i>
+          {isMobileMenuOpen && (
+            <MobileMenu
+              closeMobileMenu={() => this.setState({ isMobileMenuOpen: false })}
             />
-            {isUserMenuOpen && <UserMenu user={user} />}
-          </TopNavItem>
-          {/* Mobile hamburger menu button */}
-          <TopNavItem hideOnDesktop>
-            <i
-              className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
-              onClick={() =>
-                this.setState({ isMobileMenuOpen: !isMobileMenuOpen })
-              }
-            ></i>
-            {isMobileMenuOpen && (
-              <MobileMenu
-                closeMobileMenu={() =>
-                  this.setState({ isMobileMenuOpen: false })
-                }
-              />
-            )}
-          </TopNavItem>
-        </SectionContainerRight>
+          )}
+        </MobileMenuButtonContainer>
       </Container>
     )
   }
