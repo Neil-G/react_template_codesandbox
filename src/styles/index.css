@@ -8,3 +8,8 @@ body {
 ul {
   padding-left: 0;
 }
+
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background: rgba(0, 0, 0, 0.85) !important;
+  z-index: 1001 !important;
+}
