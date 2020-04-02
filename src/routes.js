@@ -37,7 +37,7 @@ class RouteWithUtilsComponent extends React.Component {
   }
 
   render() {
-    return <Route {...this.props} />
+    return <Route exact {...this.props} />
   }
 }
 
@@ -64,7 +64,6 @@ export default (
           return (
             <RouteWithUtils
               key={path}
-              exact
               path={path}
               component={
                 !!PageComponent ? PageComponent : () => <div>{path}</div>
