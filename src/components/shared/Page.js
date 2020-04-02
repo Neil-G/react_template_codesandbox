@@ -32,6 +32,7 @@ export const PageContainer = styled.div`
 */
 
 export const PageTitle = styled.h1`
+  margin-top: 0px;
   font-size: 24px;
 `
 
@@ -121,7 +122,8 @@ const PageNavItem = ({ label, isActive, to, count }) => {
       style={{ textDecoration: 'none' }}
     >
       <PageNavItemContainer isActive={isActive}>
-        {capitalize(label)} <TotalCount isActive={isActive}>{count}</TotalCount>
+        {typeof label === 'string' ? capitalize(label) : label}{' '}
+        <TotalCount isActive={isActive}>{count}</TotalCount>
       </PageNavItemContainer>
     </Link>
   )
@@ -138,10 +140,19 @@ export const PageNav = withRouter(
       <PageNavContainer>
         {/* New */}
         <NavItemsContainer>
-          {navItems.map(({ label, count }) => (
+          {navItems.map(({ label, count, icon }) => (
             <PageNavItem
               key={label}
-              label={label}
+              label={
+                window.innerWidth < 540 && icon ? (
+                  <i
+                    className={icon}
+                    style={{ marginRight: '8px', fontSize: '1.5em' }}
+                  />
+                ) : (
+                  label
+                )
+              }
               count={count}
               to={`${rootPath}/${label.split(' ').join('-')}`}
               isActive={pathname.includes(label)}
