@@ -2,7 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
-import { UserInfoForm } from './../../forms/TextForms'
+import Page from './../../shared/Page'
+
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -20,9 +21,11 @@ const Container = styled.div``
 class ProfilePage extends React.Component {
   render() {
     return (
-      <Container>
-        <h5>Home</h5>
-      </Container>
+      <Page.Container>
+        <Page.ContentContainer>
+          <Page.Title>Home</Page.Title>
+        </Page.ContentContainer>
+      </Page.Container>
     )
   }
 }
