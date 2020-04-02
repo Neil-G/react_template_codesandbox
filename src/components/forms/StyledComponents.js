@@ -13,6 +13,7 @@ export const FormInputLabel = styled.label`
   font-size: 14px;
   margin-bottom: 6px;
   width: 100%;
+  font-weight: 600;
 `
 
 export const InputContainer = styled.div`
