@@ -9,7 +9,7 @@ export const PanelContainer = styled.div`
 `
 
 export const PanelSection = styled.div`
-  padding: 16px;
+  padding: 18px;
   &:not(:last-child) {
     border-bottom: 1px solid #e3eaef;
   }
@@ -25,7 +25,21 @@ export const PanelSection = styled.div`
   }}
 `
 
+export const PanelColumnsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const PanelPageNavContainer = styled(PanelContainer)`
+  margin-right: 18px;
+  @media (max-width: 720px) {
+    display: none;
+  }
+`
+
 export default {
   Container: PanelContainer,
   Section: PanelSection,
+  ColumnsContainer: PanelColumnsContainer,
+  PageNavContainer: PanelPageNavContainer,
 }
