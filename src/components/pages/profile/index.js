@@ -38,27 +38,35 @@ class ProfilePage extends React.Component {
     } = user
     return (
       <Page.Container>
-        <Page.ContentContainer maxWidth='720'>
+        <Page.ContentContainer>
           <Page.Title>Your Profile</Page.Title>
-          <Panel.Container>
-            <Panel.Section>
-              <h3>General Info</h3>
-            </Panel.Section>
-            <Panel.Section>
-              <UserInfoForm user={user} />
-            </Panel.Section>
-            <Panel.Section>
-              <div>
-                {isFacebookAccountConnected && 'Facebook account is connected'}
-              </div>
-              <div>
-                {isGoogleAccountConnected && 'Google account is connected'}
-              </div>
-              <div>
-                {isGithubAccountConnected && 'Github account is connected'}
-              </div>
-            </Panel.Section>
-          </Panel.Container>
+          <Panel.ColumnsContainer>
+            <Panel.PageNavContainer
+              style={{ width: '270px', height: 'fit-content' }}
+            >
+              <Panel.Section>User Info</Panel.Section>
+            </Panel.PageNavContainer>
+            <Panel.Container style={{ flexGrow: 1 }}>
+              <Panel.Section>
+                <h3>General Info</h3>
+              </Panel.Section>
+              <Panel.Section>
+                <UserInfoForm user={user} />
+              </Panel.Section>
+              <Panel.Section>
+                <div>
+                  {isFacebookAccountConnected &&
+                    'Facebook account is connected'}
+                </div>
+                <div>
+                  {isGoogleAccountConnected && 'Google account is connected'}
+                </div>
+                <div>
+                  {isGithubAccountConnected && 'Github account is connected'}
+                </div>
+              </Panel.Section>
+            </Panel.Container>
+          </Panel.ColumnsContainer>
         </Page.ContentContainer>
       </Page.Container>
     )
