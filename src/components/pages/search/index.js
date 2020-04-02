@@ -12,7 +12,12 @@ import { searchPageConfig } from './../../../configs/pages'
 |--------------------------------------------------------------------------
 */
 
-const Container = styled.div``
+const OpenMobileFilterButton = styled.button`
+  float: right;
+  @media (min-width: 720px) {
+    display: none;
+  }
+`
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +26,28 @@ const Container = styled.div``
 */
 
 class SearchPage extends React.Component {
+  state = {
+    isMobileFilterOpen: false,
+  }
   render() {
+    const { isMobileFilterOpen } = this.state
     return (
       <Page.Container withSearchPanel>
-        <FilterBar />
+        <FilterBar.Desktop />
+        <FilterBar.Mobile
+          isOpen={isMobileFilterOpen}
+          title='Filter'
+          closeModal={() => this.setState({ isMobileFilterOpen: false })}
+        />
         <Page.ContentContainer>
-          <Page.Title>Search</Page.Title>
+          <Page.Title>
+            Search
+            <OpenMobileFilterButton
+              onClick={() => this.setState({ isMobileFilterOpen: true })}
+            >
+              Filter
+            </OpenMobileFilterButton>
+          </Page.Title>
           <Page.Nav
             rootPath={searchPageConfig.path}
             navItems={[
