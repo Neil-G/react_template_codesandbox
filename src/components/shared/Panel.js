@@ -3,15 +3,17 @@ import styled, { css } from 'styled-components'
 
 export const PanelContainer = styled.div`
   background: white;
-  box-shadow: 0px 3px 6px #0000000d;
-  border: 1px solid #e3eaef;
-  border-radius: 4px;
+  // box-shadow: 0px 3px 6px #0000000d;
+  // border: 1px solid #e3eaef;
+  border: 1px solid rgb(214, 218, 224);
+  border-radius: 5px;
+  margin-bottom: 18px;
 `
 
 export const PanelSection = styled.div`
   padding: 18px;
   &:not(:last-child) {
-    border-bottom: 1px solid #e3eaef;
+    border-bottom: 1px solid rgb(214, 218, 224);
   }
   ${({ mobileOnly }) => {
     return (
@@ -23,6 +25,11 @@ export const PanelSection = styled.div`
       `
     )
   }}
+`
+
+export const PanelSectionTitle = styled.h3`
+  font-weight: 700;
+  margin-top: 0px;
 `
 
 export const PanelColumnsContainer = styled.div`
@@ -40,6 +47,7 @@ export const PanelPageNavContainer = styled(PanelContainer)`
 export default {
   Container: PanelContainer,
   Section: PanelSection,
+  SectionTitle: PanelSectionTitle,
   ColumnsContainer: PanelColumnsContainer,
   PageNavContainer: PanelPageNavContainer,
 }
