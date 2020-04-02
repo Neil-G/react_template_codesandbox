@@ -16,7 +16,7 @@ import {
   forumPageConfig,
   profilePageConfig,
 } from './../../configs/pages'
-import { snow, light } from './../../styles/colors'
+import { light } from './../../styles/colors'
 const withClickOutside = require('react-click-outside')
 
 /*
@@ -169,6 +169,7 @@ const MobileMenuContainer = styled.div`
   flex-direction: column;
   background: white;
   position: fixed;
+  border-top: 1px solid ${light};
   top: ${globalLayout.topNavHeightPx};
   right: 0px;
   bottom: 0px;
@@ -190,24 +191,6 @@ const MobileMenuItem = styled.div`
     display: none;
   }
 `
-
-const mobileMenuItems = []
-
-const MobileMenu = ({ closeMobileMenu }) => {
-  return (
-    <MobileMenuContainer>
-      {mobileMenuItems.map(({ label, to = '/' }) => {
-        return (
-          <Link to={to} onClick={closeMobileMenu}>
-            <MobileMenuItem>{label}</MobileMenuItem>
-          </Link>
-        )
-      })}
-      <MobileMenuItem onClick={logout}>Logout</MobileMenuItem>
-    </MobileMenuContainer>
-  )
-}
-
 /*
 |--------------------------------------------------------------------------
 | Nav Items
@@ -222,6 +205,37 @@ const desktopNavItems = [
   forumPageConfig,
   profilePageConfig,
 ]
+
+const mobileMenuItems = [
+  homePageConfig,
+  searchPageConfig,
+  managePageConfig,
+  messagesPageConfig,
+  forumPageConfig,
+  profilePageConfig,
+]
+
+/*
+|--------------------------------------------------------------------------
+| Mobile Nav Items
+|--------------------------------------------------------------------------
+*/
+
+const MobileMenu = ({ closeMobileMenu }) => {
+  return (
+    <MobileMenuContainer>
+      {mobileMenuItems.map(({ label, path }) => {
+        return (
+          <Link to={path} onClick={closeMobileMenu}>
+            <MobileMenuItem>{label}</MobileMenuItem>
+          </Link>
+        )
+      })}
+      <MobileMenuItem onClick={logout}>Logout</MobileMenuItem>
+    </MobileMenuContainer>
+  )
+}
+
 /*
 |--------------------------------------------------------------------------
 | TopNav Component
@@ -239,14 +253,16 @@ class TopNav extends React.Component {
       <Container>
         {/* Left Section */}
         <SectionContainerLeft>
+          {/* Logo */}
           <TopNavItem key='logo'>
             <Link to={'/'}>
               <i className='fal fa-robot logo' />
             </Link>
           </TopNavItem>
+          {/*  NDesktop Nav Items */}
           {desktopNavItems.map(({ label, path }) => {
             return (
-              <TopNavItem key={label}>
+              <TopNavItem key={label} hideOnMobile>
                 <Link to={path}>{label}</Link>
               </TopNavItem>
             )
@@ -255,6 +271,7 @@ class TopNav extends React.Component {
 
         {/* Right Section */}
         <SectionContainerRight>
+          {/* User Menu */}
           <TopNavItem hideOnMobile>
             <i className='fal fa-user-circle user-menu-icon' />
             <i
@@ -268,6 +285,7 @@ class TopNav extends React.Component {
             />
             {isUserMenuOpen && <UserMenu user={user} />}
           </TopNavItem>
+          {/* Mobile hamburger menu button */}
           <TopNavItem hideOnDesktop>
             <i
               className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
