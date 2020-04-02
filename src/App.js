@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { globalLayout } from './styles'
 import { snow } from './styles/colors'
 import store from './redux/store'
+import { allPageConfigs } from './configs/pages'
 const { Provider } = require('react-redux')
 
 /*
@@ -25,9 +26,12 @@ const Container = styled.div`
 `
 
 const PageContainer = styled.div`
-  padding: ${globalLayout.topNavHeight + 18}px 0;
+  padding: ${globalLayout.topNavHeight}px 0;
 `
 
+const pageUrlPathsToHideFooter = allPageConfigs
+  .filter(({ showFooter }) => showFooter === false)
+  .map(({ path }) => path)
 /*
 |--------------------------------------------------------------------------
 | Application View Container
@@ -35,11 +39,15 @@ const PageContainer = styled.div`
 */
 
 class AppComponent extends React.Component {
-  _handleRoutingOnLogin = () => {
+  _handleRoutingOnLogin = () => {}
+
+  _shouldRenderFooter = () => {
     const {
-      history: { push },
       location: { pathname },
     } = this.props
+    return pageUrlPathsToHideFooter.every(path => {
+      return !pathname.includes(path)
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -54,7 +62,11 @@ class AppComponent extends React.Component {
     return (
       <Container>
         {isLoggedIn ? (
-          [<TopNav />, <PageContainer>{children}</PageContainer>, <Footer />]
+          <>
+            <TopNav />
+            <PageContainer>{children}</PageContainer>
+            {this._shouldRenderFooter() && <Footer />}
+          </>
         ) : (
           <FullScreenLoadingIndicator text='this is a loading indicator' />
         )}

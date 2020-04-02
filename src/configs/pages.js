@@ -25,6 +25,7 @@ export const searchPageConfig = {
   label: 'Search',
   path: SEARCH_PATH,
   PageComponent: SearchPage,
+  showFooter: false,
 }
 
 export const managePageConfig = {
@@ -50,6 +51,15 @@ export const profilePageConfig = {
   path: PROFILE_PAGE_PATH,
   PageComponent: ProfilePage,
 }
+
+export const allPageConfigs = [
+  homePageConfig,
+  searchPageConfig,
+  managePageConfig,
+  messagesPageConfig,
+  forumPageConfig,
+  profilePageConfig,
+]
 
 export default [
   homePageConfig,
