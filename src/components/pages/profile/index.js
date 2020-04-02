@@ -46,17 +46,14 @@ class ProfilePage extends React.Component {
             >
               <Panel.Section>User Info</Panel.Section>
             </Panel.PageNavContainer>
-            {/* User Info */}
             <div style={{ flexGrow: 1 }}>
+              {/* User Info */}
               <Panel.Container>
                 <Panel.Section>
                   <Panel.SectionTitle>General Info</Panel.SectionTitle>
                   <UserInfoForm user={user} />
                 </Panel.Section>
-              </Panel.Container>
-
-              {/* Social Platform Accounts */}
-              <Panel.Container>
+                {/* Social Platform Accounts */}
                 <Panel.Section>
                   <Panel.SectionTitle>Social Media Accounts</Panel.SectionTitle>
                   <div>
