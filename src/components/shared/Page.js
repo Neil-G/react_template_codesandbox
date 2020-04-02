@@ -85,6 +85,7 @@ const PageNavItemContainer = styled(SectionContainer)`
   color: #333;
   padding: 2px 10px 12px;
   margin-right: 14px;
+  box-sizing: border-box;
   cursor: ${({ isActive }) => isActive && 'default !important'};
   border-bottom: ${({ isActive }) => isActive && '4px solid #2E595C'};
   font-size: 12px;
