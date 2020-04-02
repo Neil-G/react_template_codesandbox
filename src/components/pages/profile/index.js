@@ -46,26 +46,32 @@ class ProfilePage extends React.Component {
             >
               <Panel.Section>User Info</Panel.Section>
             </Panel.PageNavContainer>
-            <Panel.Container style={{ flexGrow: 1 }}>
-              <Panel.Section>
-                <h3>General Info</h3>
-              </Panel.Section>
-              <Panel.Section>
-                <UserInfoForm user={user} />
-              </Panel.Section>
-              <Panel.Section>
-                <div>
-                  {isFacebookAccountConnected &&
-                    'Facebook account is connected'}
-                </div>
-                <div>
-                  {isGoogleAccountConnected && 'Google account is connected'}
-                </div>
-                <div>
-                  {isGithubAccountConnected && 'Github account is connected'}
-                </div>
-              </Panel.Section>
-            </Panel.Container>
+            {/* User Info */}
+            <div style={{ flexGrow: 1 }}>
+              <Panel.Container>
+                <Panel.Section>
+                  <Panel.SectionTitle>General Info</Panel.SectionTitle>
+                  <UserInfoForm user={user} />
+                </Panel.Section>
+              </Panel.Container>
+
+              {/* Social Platform Accounts */}
+              <Panel.Container>
+                <Panel.Section>
+                  <Panel.SectionTitle>Social Media Accounts</Panel.SectionTitle>
+                  <div>
+                    {isFacebookAccountConnected &&
+                      'Facebook account is connected'}
+                  </div>
+                  <div>
+                    {isGoogleAccountConnected && 'Google account is connected'}
+                  </div>
+                  <div>
+                    {isGithubAccountConnected && 'Github account is connected'}
+                  </div>
+                </Panel.Section>
+              </Panel.Container>
+            </div>
           </Panel.ColumnsContainer>
         </Page.ContentContainer>
       </Page.Container>
