@@ -1,7 +1,7 @@
 // https://www.lucidchart.com/documents/edit/d9c3f584-0603-40f3-8998-11cc3e240118/0
-import React from "react";
-import ReactDOM from "react-dom";
-import routes from "./routes";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import routes from './routes'
 import { loginWithToken } from './utils'
 
 /*
@@ -10,9 +10,9 @@ import { loginWithToken } from './utils'
 |--------------------------------------------------------------------------
 */
 
-import "./styles/normalize.css";
-import "./styles/skeleton.css";
-import "./styles/index.css";
+import './styles/normalize.css'
+// import "./styles/skeleton.css";
+import './styles/index.css'
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +29,5 @@ loginWithToken()
 |--------------------------------------------------------------------------
 */
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(routes, rootElement);
+const rootElement = document.getElementById('root')
+ReactDOM.render(routes, rootElement)
