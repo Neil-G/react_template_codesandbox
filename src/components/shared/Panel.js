@@ -3,8 +3,11 @@ import styled, { css } from 'styled-components'
 
 export const PanelContainer = styled.div`
   background: white;
-  // box-shadow: 0px 3px 6px #0000000d;
+  // SELECTED styling
   // border: 1px solid #e3eaef;
+  // border-radius: 3px;
+  // box-shadow: 0px 3px 6px #0000000d;
+  // JUMPSTART ME STYLING
   border: 1px solid rgb(214, 218, 224);
   border-radius: 5px;
   margin-bottom: 18px;
