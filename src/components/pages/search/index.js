@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
-import { UserInfoForm } from './../../forms/TextForms'
+import Page from './../../shared/Page'
 /*
 |--------------------------------------------------------------------------
 | Styled Components
@@ -20,9 +20,11 @@ const Container = styled.div``
 class SearchPage extends React.Component {
   render() {
     return (
-      <Container>
-        <h5>Search</h5>
-      </Container>
+      <Page.Container withSearchPanel>
+        <Page.ContentContainer>
+          <Page.Title>Search</Page.Title>
+        </Page.ContentContainer>
+      </Page.Container>
     )
   }
 }

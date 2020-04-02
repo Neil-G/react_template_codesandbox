@@ -1,0 +1,1 @@
+export const SEARCH_BAR_DESKTOP_WIDTH = 300
