@@ -8,13 +8,6 @@ import allPageConfigs from './configs/pages'
 
 /*
 |--------------------------------------------------------------------------
-| Pages Configuration
-|--------------------------------------------------------------------------
-*/
-export const redirects = []
-
-/*
-|--------------------------------------------------------------------------
 | Augmented Routes
 |--------------------------------------------------------------------------
 */
@@ -46,6 +39,21 @@ const RouteWithUtils = withRouter(
     user: get(state, 'session.user', {}),
   }))(RouteWithUtilsComponent),
 )
+
+/*
+|--------------------------------------------------------------------------
+| Redirects
+|--------------------------------------------------------------------------
+*/
+
+let redirects = []
+allPageConfigs.forEach(pageConfig => {
+  if (pageConfig.redirects) {
+    pageConfig.redirects.forEach(redirect => {
+      redirects.push(redirect)
+    })
+  }
+})
 
 /*
 |--------------------------------------------------------------------------

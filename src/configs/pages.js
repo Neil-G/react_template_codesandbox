@@ -5,6 +5,7 @@ import {
   MANAGE_PAGE_PATH,
   MESSAGES_PAGE_PATH,
   FORUM_PAGE_PATH,
+  SEARCH_PAGE_SUBPATHS,
 } from './../constants/urlPaths'
 import {
   HomePage,
@@ -26,6 +27,12 @@ export const searchPageConfig = {
   path: SEARCH_PATH,
   PageComponent: SearchPage,
   showFooter: false,
+  redirects: [
+    {
+      from: SEARCH_PATH,
+      to: [SEARCH_PATH, SEARCH_PAGE_SUBPATHS.NEW].join('/'),
+    },
+  ],
 }
 
 export const managePageConfig = {
