@@ -43,7 +43,7 @@ export const PageTitle = styled.h1`
 
 export const PageContentContainer = styled.div`
   margin: auto;
-  max-width: 1200px;
+  max-width: ${({ maxWidth }) => (maxWidth || '1200') + 'px'};
   padding: 18px;
 `
 
