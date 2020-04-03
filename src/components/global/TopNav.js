@@ -47,13 +47,17 @@ const DesktopNavItemContainer = styled.div`
 `
 
 const NavItem = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0 16px;
   position: relative;
-  border-bottom: 4px solid white;
-
+  border-bottom: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
+  &:hover {
+    border-bottom: 5px solid
+      ${({ isActive }) => (isActive ? 'tomato' : '#ffcdd2')};
+  }
   a {
     color: #2b2d42;
     text-decoration: none;
@@ -65,15 +69,6 @@ const NavItem = styled.div`
     margin-left: 8px;
     cursor: pointer;
   }
-  ${({ isActive }) => {
-    return (
-      isActive &&
-      css`
-        border-bottom: 4px solid tomato;
-        box-sizing: border-box;
-      `
-    )
-  }}
 `
 
 /*
@@ -167,6 +162,17 @@ const UserMenu = withClickOutside(UserMenuComponent)
 |--------------------------------------------------------------------------
 */
 
+const SubNavLinkItem = styled(Link)`
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  border-left: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
+  &:hover {
+    border-left: 5px solid
+      ${({ isActive }) => (isActive ? 'tomato' : '#ffcdd2')};
+  }
+`
+
 class NavItemWithSubmenu extends React.Component {
   render() {
     const {
@@ -177,6 +183,7 @@ class NavItemWithSubmenu extends React.Component {
       openSubMenu,
       closeSubMenu,
       pathname,
+      push,
     } = this.props
     return (
       <TetherComponent
@@ -190,13 +197,12 @@ class NavItemWithSubmenu extends React.Component {
         /* renderTarget: This is what the item will be tethered to, make sure to attach the ref */
         renderTarget={ref => (
           <NavItem
+            onClick={() => (push(path), closeSubMenu())}
             isActive={pathname.includes(path)}
             ref={ref}
             onMouseEnter={openSubMenu}
           >
-            <Link to={path} onClick={closeSubMenu}>
-              {label}
-            </Link>
+            {label}
           </NavItem>
         )}
         /* renderElement: If present, this item will be tethered to the the component returned by renderTarget */
@@ -216,21 +222,14 @@ class NavItemWithSubmenu extends React.Component {
               {subRoutes.map(subRoute => {
                 return (
                   <div>
-                    <Link
-                      style={{
-                        display: 'block',
-                        padding: '12px',
-                        textDecoration: 'none',
-                        // borderBottom: '1px solid rgba(0,0,0,0.15)',
-                        borderLeft:
-                          pathname === subRoute.path && '2px solid tomato',
-                      }}
+                    <SubNavLinkItem
+                      isActive={pathname === subRoute.path}
                       onClick={closeSubMenu}
                       onMouseLeave={e => e.stopPropagation()}
                       to={subRoute.path}
                     >
                       {startCase(capitalize(subRoute.label))}
-                    </Link>
+                    </SubNavLinkItem>
                   </div>
                 )
               })}
@@ -287,8 +286,8 @@ const MobileNavItem = styled.div`
 `
 const mobileMenuItems = [
   homePageConfig,
-  searchPageConfig,
   itemsPageConfig,
+  searchPageConfig,
   managePageConfig,
   messagesPageConfig,
   forumPageConfig,
@@ -318,8 +317,8 @@ const MobileMenu = ({ closeMobileMenu }) => {
 
 const desktopNavItems = [
   homePageConfig,
-  searchPageConfig,
   itemsPageConfig,
+  searchPageConfig,
   managePageConfig,
   messagesPageConfig,
   forumPageConfig,
@@ -330,14 +329,15 @@ class TopNav extends React.Component {
   state = {
     isMobileMenuOpen: false,
     openNavSubitemMenu: undefined,
+    isUserMenuOpen: false,
   }
   render() {
     const {
-      isUserMenuOpen,
       user,
       location: { pathname },
+      history: { push },
     } = this.props
-    const { isMobileMenuOpen, openNavSubitemMenu } = this.state
+    const { isUserMenuOpen, isMobileMenuOpen, openNavSubitemMenu } = this.state
 
     return (
       <Container
@@ -361,6 +361,7 @@ class TopNav extends React.Component {
                   path={path}
                   subRoutes={subRoutes}
                   pathname={pathname}
+                  push={push}
                   isSubMenuOpen={openNavSubitemMenu === label}
                   openSubMenu={() =>
                     this.setState({ openNavSubitemMenu: label })
@@ -375,12 +376,13 @@ class TopNav extends React.Component {
                 <NavItem
                   key={label}
                   isActive={pathname.includes(path)}
+                  onClick={() => push(path)}
                   onMouseEnter={() =>
                     openNavSubitemMenu !== label &&
                     this.setState({ openNavSubitemMenu: undefined })
                   }
                 >
-                  <Link to={path}>{label}</Link>
+                  {label}
                 </NavItem>
               )
             }
@@ -398,9 +400,7 @@ class TopNav extends React.Component {
             className='fas fa-caret-down user-menu-dropdown'
             style={{ cursor: 'pointer' }}
             onClick={() => {
-              updater.toggleOpenGlobal({
-                componentName: 'topNav',
-              })
+              this.setState({ isUserMenuOpen: !isUserMenuOpen })
             }}
           />
           {isUserMenuOpen && <UserMenu user={user} />}
@@ -435,7 +435,6 @@ class TopNav extends React.Component {
 const mapStateToProps = state => {
   return {
     user: get(state, 'session.user', {}),
-    isUserMenuOpen: state.global.isOpen.topNav,
   }
 }
 

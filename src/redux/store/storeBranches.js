@@ -4,12 +4,6 @@
 |--------------------------------------------------------------------------
 */
 
-const global = {
-  isOpen: {
-    topNav: false,
-  },
-}
-
 /*
 |--------------------------------------------------------------------------
 | main export
@@ -17,7 +11,7 @@ const global = {
 */
 
 export default {
-  global,
+  global: {},
   session: { userId: null },
   users: {},
   directMessages: {},
