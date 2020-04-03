@@ -1,7 +1,12 @@
 export const ROOT_URL_PATH = ''
 export const SettingsPath = '/settings'
 
-// Top-level pages
+/*
+|--------------------------------------------------------------------------
+| Top Level Paths
+|--------------------------------------------------------------------------
+*/
+export const ONBOARDING_PAGE_PATH = [ROOT_URL_PATH, 'onboarding'].join('/')
 export const USER_HOME_PATH = [ROOT_URL_PATH, 'home'].join('/')
 export const SEARCH_PATH = [ROOT_URL_PATH, 'search'].join('/')
 export const MANAGE_PAGE_PATH = [ROOT_URL_PATH, 'manage'].join('/')
@@ -9,6 +14,12 @@ export const MESSAGES_PAGE_PATH = [ROOT_URL_PATH, 'messages'].join('/')
 export const FORUM_PAGE_PATH = [ROOT_URL_PATH, 'forum'].join('/')
 export const PROFILE_PAGE_PATH = [ROOT_URL_PATH, 'profile'].join('/')
 export const ITEMS_PAGE_PATH = [ROOT_URL_PATH, 'items'].join('/')
+
+/*
+|--------------------------------------------------------------------------
+| Subpaths
+|--------------------------------------------------------------------------
+*/
 
 // Search Page Paths
 export const SEARCH_PAGE_SUBPATHS = {
@@ -30,7 +41,7 @@ export const MESSAGE_PAGE_SUBPATHS = {
 // Manage Page Paths
 export const MANAGE_PAGE_SUBPATHS = {
   SCREENING: 'screening',
-  INTERVIEW: 'interview',
+  INTERVIEW: 'interviewing',
   OFFERED: 'offered',
   REJECTED: 'rejected',
   ALL: 'all',
@@ -53,4 +64,23 @@ export const FORUM_PAGE_SUBPATHS = {
 export const PROFILE_PAGE_SUBPATHS = {
   USER_INFO: 'user',
   LINKED_ACCOUNTS: 'linked-accounts',
+}
+
+export const PROFILE_PAGE_PATHS = createPagePathnames(
+  PROFILE_PAGE_PATH,
+  PROFILE_PAGE_SUBPATHS,
+)
+
+/*
+|--------------------------------------------------------------------------
+| Util methods
+|--------------------------------------------------------------------------
+*/
+
+function createPagePathnames(rootPath, subPaths) {
+  const paths = {}
+  Object.entries(subPaths).forEach(([key, value]) => {
+    paths[key] = [rootPath, value].join('/')
+  })
+  return paths
 }
