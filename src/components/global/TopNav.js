@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, capitalize } from 'lodash'
 import { SettingsPath, PROFILE_PAGE_PATH } from './../../constants/urlPaths.js'
 import { globalLayout } from './../../styles'
 import updater from './../../redux/updater'
@@ -229,7 +229,7 @@ class NavItemWithSubmenu extends React.Component {
                       onMouseLeave={e => e.stopPropagation()}
                       to={subRoute.path}
                     >
-                      {subRoute.label}
+                      {capitalize(subRoute.label)}
                     </Link>
                   </div>
                 )
