@@ -123,7 +123,9 @@ const PageNavItem = ({ label, isActive, to, count }) => {
     >
       <PageNavItemContainer isActive={isActive}>
         {typeof label === 'string' ? capitalize(label) : label}{' '}
-        <TotalCount isActive={isActive}>{count}</TotalCount>
+        {Number.isInteger(count) && (
+          <TotalCount isActive={isActive}>{count}</TotalCount>
+        )}
       </PageNavItemContainer>
     </Link>
   )
@@ -133,31 +135,32 @@ export const PageNav = withRouter(
   ({
     location: { pathname },
     navItems = [],
-    rootPath,
     renderFilterOptions,
+    counts = {},
   }) => {
     return (
       <PageNavContainer>
-        {/* New */}
         <NavItemsContainer>
-          {navItems.map(({ label, count, icon }) => (
-            <PageNavItem
-              key={label}
-              label={
-                window.innerWidth < 540 && icon ? (
-                  <i
-                    className={icon}
-                    style={{ marginRight: '8px', fontSize: '1.5em' }}
-                  />
-                ) : (
-                  label
-                )
-              }
-              count={count}
-              to={`${rootPath}/${label.split(' ').join('-')}`}
-              isActive={pathname.includes(label)}
-            />
-          ))}
+          {navItems.map(({ label, path, icon }) => {
+            return (
+              <PageNavItem
+                key={label}
+                label={
+                  window.innerWidth < 540 && icon ? (
+                    <i
+                      className={icon}
+                      style={{ marginRight: '8px', fontSize: '1.5em' }}
+                    />
+                  ) : (
+                    label
+                  )
+                }
+                count={counts[label]}
+                to={path}
+                isActive={pathname === path}
+              />
+            )
+          })}
         </NavItemsContainer>
         <SectionContainer>
           {renderFilterOptions && renderFilterOptions()}
