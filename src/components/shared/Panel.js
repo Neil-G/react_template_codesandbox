@@ -41,9 +41,19 @@ export const PanelColumnsContainer = styled.div`
 `
 
 export const PanelPageNavContainer = styled(PanelContainer)`
+  height: fit-content;
+  width: 270px;
   margin-right: 18px;
   @media (max-width: 720px) {
     display: none;
+  }
+`
+
+export const PanelPageNavItem = styled(PanelSection)`
+  border-left: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
+  &:hover {
+    border-left: 5px solid
+      ${({ isActive }) => (isActive ? 'tomato' : '#ffcdd2')};
   }
 `
 
@@ -53,4 +63,5 @@ export default {
   SectionTitle: PanelSectionTitle,
   ColumnsContainer: PanelColumnsContainer,
   PageNavContainer: PanelPageNavContainer,
+  PageNavItem: PanelPageNavItem,
 }
