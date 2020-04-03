@@ -4,14 +4,13 @@ import { get } from 'lodash'
 import { connect } from 'react-redux'
 import Page from './../../shared/Page'
 import { itemsPageConfig } from './../../../configs/pages'
-
+import BrandButtons from './../../shared/BrandButtons'
+import BrandIcons from './../../shared/BrandIcons'
 /*
 |--------------------------------------------------------------------------
 | Styled Components
 |--------------------------------------------------------------------------
 */
-
-const Container = styled.div``
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +23,15 @@ class ItemsPage extends React.Component {
     return (
       <Page.Container>
         <Page.ContentContainer>
-          <Page.Title>Items</Page.Title>
+          <Page.Title
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+          >
+            Items
+            <BrandButtons.Primary>
+              <BrandIcons.Add marginRight />
+              Add an Item
+            </BrandButtons.Primary>
+          </Page.Title>
           <Page.Nav navItems={itemsPageConfig.subRoutes} />
         </Page.ContentContainer>
       </Page.Container>
