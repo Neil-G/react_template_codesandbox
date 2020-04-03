@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { get, capitalize } from 'lodash'
+import { get, startCase, capitalize } from 'lodash'
 import { SettingsPath, PROFILE_PAGE_PATH } from './../../constants/urlPaths.js'
 import { globalLayout } from './../../styles'
 import updater from './../../redux/updater'
@@ -229,7 +229,7 @@ class NavItemWithSubmenu extends React.Component {
                       onMouseLeave={e => e.stopPropagation()}
                       to={subRoute.path}
                     >
-                      {capitalize(subRoute.label)}
+                      {startCase(capitalize(subRoute.label))}
                     </Link>
                   </div>
                 )
@@ -340,7 +340,9 @@ class TopNav extends React.Component {
     const { isMobileMenuOpen, openNavSubitemMenu } = this.state
 
     return (
-      <Container>
+      <Container
+        onMouseLeave={() => this.setState({ openNavSubitemMenu: undefined })}
+      >
         {/* Logo */}
         <NavItem key='logo'>
           <Link to={homePageConfig.path}>
