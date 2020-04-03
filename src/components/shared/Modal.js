@@ -85,7 +85,6 @@ export default class _Modal extends React.Component {
       style = {},
       closeModal = noop,
       title = 'Modal Title',
-      withPadding = true,
     } = this.props
     return (
       <Modal
