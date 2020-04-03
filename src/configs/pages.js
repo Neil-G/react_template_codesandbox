@@ -8,6 +8,8 @@ import {
   SEARCH_PAGE_SUBPATHS,
   MESSAGE_PAGE_SUBPATHS,
   ITEMS_PAGE_PATH,
+  MANAGE_PAGE_SUBPATHS,
+  ITEMS_PAGE_SUBPATHS,
 } from './../constants/urlPaths'
 import {
   HomePage,
@@ -48,6 +50,18 @@ export const managePageConfig = {
   label: 'Manage',
   path: MANAGE_PAGE_PATH,
   PageComponent: ManagePage,
+  subRoutes: Object.keys(MANAGE_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [MANAGE_PAGE_PATH, MANAGE_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
+  redirects: [
+    {
+      from: MANAGE_PAGE_PATH,
+      to: [MANAGE_PAGE_PATH, MANAGE_PAGE_SUBPATHS.SCREENING].join('/'),
+    },
+  ],
 }
 
 export const messagesPageConfig = {
@@ -84,6 +98,18 @@ export const itemsPageConfig = {
   label: 'Items',
   path: ITEMS_PAGE_PATH,
   PageComponent: ItemsPage,
+  subRoutes: Object.keys(ITEMS_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [ITEMS_PAGE_PATH, ITEMS_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
+  redirects: [
+    {
+      from: ITEMS_PAGE_PATH,
+      to: [ITEMS_PAGE_PATH, ITEMS_PAGE_SUBPATHS.PUBLIC].join('/'),
+    },
+  ],
 }
 
 export const allPageConfigs = [

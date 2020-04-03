@@ -26,3 +26,20 @@ export const MESSAGE_PAGE_SUBPATHS = {
   ARCHIVED: 'archived',
   ALL: 'all',
 }
+
+// Manage Page Paths
+export const MANAGE_PAGE_SUBPATHS = {
+  SCREENING: 'screening',
+  INTERVIEW: 'interview',
+  OFFERED: 'offered',
+  REJECTED: 'rejected',
+  ALL: 'all',
+}
+
+// Items Page Paths
+export const ITEMS_PAGE_SUBPATHS = {
+  PUBLIC: 'public',
+  DRAFT: 'draft',
+  ARCHIVED: 'archived',
+  ALL: 'all',
+}
