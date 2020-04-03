@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import { noop } from 'lodash'
 
 const generalSelectInputStyle = {
   control: provided => ({ ...provided }),
@@ -11,6 +12,13 @@ const generalSelectInputStyle = {
   }),
 }
 
-export default ({ options = [], value }) => {
-  return <Select styles={generalSelectInputStyle} options={options} />
+export default ({ options = [], value, onChange = noop }) => {
+  return (
+    <Select
+      value={value}
+      styles={generalSelectInputStyle}
+      options={options}
+      onChange={selected => onChange(selected)}
+    />
+  )
 }
