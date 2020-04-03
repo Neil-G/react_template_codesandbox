@@ -30,6 +30,12 @@ export const searchPageConfig = {
   path: SEARCH_PATH,
   PageComponent: SearchPage,
   showFooter: false,
+  subRoutes: Object.keys(SEARCH_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [SEARCH_PATH, SEARCH_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
   redirects: [
     {
       from: SEARCH_PATH,
@@ -48,6 +54,12 @@ export const messagesPageConfig = {
   label: 'Messages',
   path: MESSAGES_PAGE_PATH,
   PageComponent: MessagesPage,
+  subRoutes: Object.keys(MESSAGE_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [MESSAGES_PAGE_PATH, MESSAGE_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
   redirects: [
     {
       from: MESSAGES_PAGE_PATH,

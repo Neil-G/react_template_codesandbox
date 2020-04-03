@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { get, noop } from 'lodash'
+import { get } from 'lodash'
 import { SettingsPath, PROFILE_PAGE_PATH } from './../../constants/urlPaths.js'
 import { globalLayout } from './../../styles'
 import updater from './../../redux/updater'
@@ -18,6 +18,7 @@ import {
   itemsPageConfig,
 } from './../../configs/pages'
 import { light } from './../../styles/colors'
+import TetherComponent from 'react-tether'
 const withClickOutside = require('react-click-outside')
 
 /*
@@ -162,6 +163,87 @@ const UserMenu = withClickOutside(UserMenuComponent)
 
 /*
 |--------------------------------------------------------------------------
+| Desktop Sub Menu Options
+|--------------------------------------------------------------------------
+*/
+
+class NavItemWithSubmenu extends React.Component {
+  render() {
+    const {
+      label,
+      path,
+      subRoutes,
+      isSubMenuOpen,
+      openSubMenu,
+      closeSubMenu,
+      pathname,
+    } = this.props
+    return (
+      <TetherComponent
+        attachment='top center'
+        constraints={[
+          {
+            to: 'scrollParent',
+            attachment: 'together',
+          },
+        ]}
+        /* renderTarget: This is what the item will be tethered to, make sure to attach the ref */
+        renderTarget={ref => (
+          <NavItem
+            isActive={pathname.includes(path)}
+            ref={ref}
+            onMouseEnter={openSubMenu}
+          >
+            <Link to={path} onClick={closeSubMenu}>
+              {label}
+            </Link>
+          </NavItem>
+        )}
+        /* renderElement: If present, this item will be tethered to the the component returned by renderTarget */
+        renderElement={ref =>
+          isSubMenuOpen && (
+            <div
+              onMouseLeave={closeSubMenu}
+              ref={ref}
+              style={{
+                border: '1px solid rgba(0,0,0,0.15)',
+                padding: '8px',
+                background: 'white',
+                width: '160px',
+                borderRadius: '3px',
+              }}
+            >
+              {subRoutes.map(subRoute => {
+                return (
+                  <div>
+                    <Link
+                      style={{
+                        display: 'block',
+                        padding: '12px',
+                        textDecoration: 'none',
+                        // borderBottom: '1px solid rgba(0,0,0,0.15)',
+                        borderLeft:
+                          pathname === subRoute.path && '2px solid tomato',
+                      }}
+                      onClick={closeSubMenu}
+                      onMouseLeave={e => e.stopPropagation()}
+                      to={subRoute.path}
+                    >
+                      {subRoute.label}
+                    </Link>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        }
+      />
+    )
+  }
+}
+
+/*
+|--------------------------------------------------------------------------
 | Mobile Menu
 |--------------------------------------------------------------------------
 */
@@ -247,6 +329,7 @@ const desktopNavItems = [
 class TopNav extends React.Component {
   state = {
     isMobileMenuOpen: false,
+    openNavSubitemMenu: undefined,
   }
   render() {
     const {
@@ -254,7 +337,7 @@ class TopNav extends React.Component {
       user,
       location: { pathname },
     } = this.props
-    const { isMobileMenuOpen } = this.state
+    const { isMobileMenuOpen, openNavSubitemMenu } = this.state
 
     return (
       <Container>
@@ -268,13 +351,37 @@ class TopNav extends React.Component {
         {/* Center Nav Options */}
         <DesktopNavItemContainer>
           {/*  NDesktop Nav Items */}
-          {desktopNavItems.map(({ label, path }) => {
-            console.log(pathname, path)
-            return (
-              <NavItem key={label} isActive={pathname.includes(path)}>
-                <Link to={path}>{label}</Link>
-              </NavItem>
-            )
+          {desktopNavItems.map(({ label, path, subRoutes }) => {
+            if (subRoutes) {
+              return (
+                <NavItemWithSubmenu
+                  label={label}
+                  path={path}
+                  subRoutes={subRoutes}
+                  pathname={pathname}
+                  isSubMenuOpen={openNavSubitemMenu === label}
+                  openSubMenu={() =>
+                    this.setState({ openNavSubitemMenu: label })
+                  }
+                  closeSubMenu={() =>
+                    this.setState({ openNavSubitemMenu: undefined })
+                  }
+                />
+              )
+            } else {
+              return (
+                <NavItem
+                  key={label}
+                  isActive={pathname.includes(path)}
+                  onMouseEnter={() =>
+                    openNavSubitemMenu !== label &&
+                    this.setState({ openNavSubitemMenu: undefined })
+                  }
+                >
+                  <Link to={path}>{label}</Link>
+                </NavItem>
+              )
+            }
           })}
         </DesktopNavItemContainer>
 
