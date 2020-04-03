@@ -10,6 +10,8 @@ import {
   ITEMS_PAGE_PATH,
   MANAGE_PAGE_SUBPATHS,
   ITEMS_PAGE_SUBPATHS,
+  FORUM_PAGE_SUBPATHS,
+  PROFILE_PAGE_SUBPATHS,
 } from './../constants/urlPaths'
 import {
   HomePage,
@@ -86,12 +88,36 @@ export const forumPageConfig = {
   label: 'Forum',
   path: FORUM_PAGE_PATH,
   PageComponent: ForumPage,
+  subRoutes: Object.keys(FORUM_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [FORUM_PAGE_PATH, FORUM_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
+  redirects: [
+    {
+      from: FORUM_PAGE_PATH,
+      to: [FORUM_PAGE_PATH, FORUM_PAGE_SUBPATHS.ALL].join('/'),
+    },
+  ],
 }
 
 export const profilePageConfig = {
   label: 'Profile',
   path: PROFILE_PAGE_PATH,
   PageComponent: ProfilePage,
+  subRoutes: Object.keys(PROFILE_PAGE_SUBPATHS).map(subpath => {
+    return {
+      label: subpath,
+      path: [PROFILE_PAGE_PATH, PROFILE_PAGE_SUBPATHS[subpath]].join('/'),
+    }
+  }),
+  redirects: [
+    {
+      from: PROFILE_PAGE_PATH,
+      to: [PROFILE_PAGE_PATH, PROFILE_PAGE_SUBPATHS.USER_INFO].join('/'),
+    },
+  ],
 }
 
 export const itemsPageConfig = {

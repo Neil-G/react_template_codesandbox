@@ -13,7 +13,7 @@ export const ITEMS_PAGE_PATH = [ROOT_URL_PATH, 'items'].join('/')
 // Search Page Paths
 export const SEARCH_PAGE_SUBPATHS = {
   NEW: 'new',
-  READ: 'read',
+  SEEN: 'seen',
   SAVED: 'saved',
   ALL: 'all',
 }
@@ -42,4 +42,15 @@ export const ITEMS_PAGE_SUBPATHS = {
   DRAFT: 'draft',
   ARCHIVED: 'archived',
   ALL: 'all',
+}
+
+export const FORUM_PAGE_SUBPATHS = {
+  ALL: 'all',
+  ISSUES: 'issues',
+  RANDOM: 'random',
+}
+
+export const PROFILE_PAGE_SUBPATHS = {
+  USER_INFO: 'user',
+  LINKED_ACCOUNTS: 'linked-accounts',
 }
