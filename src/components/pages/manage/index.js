@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { get, last, startCase } from 'lodash'
+import { get } from 'lodash'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import SelectInput from './../../forms/SelectInput'
@@ -11,11 +11,6 @@ import { managePageConfig } from './../../../configs/pages'
 | Styled Components
 |--------------------------------------------------------------------------
 */
-
-const getSubpath = pathname => {
-  const paths = pathname.split('/')
-  return last(paths)
-}
 
 /*
 |--------------------------------------------------------------------------
