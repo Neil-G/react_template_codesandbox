@@ -1,26 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import { get } from 'lodash'
+import { get, capitalize, startCase } from 'lodash'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
+import { Route } from 'react-router-dom'
 import { UserInfoForm } from './../../forms/TextForms'
 import Panel from './../../shared/Panel'
 import Page from './../../shared/Page'
+import { profilePageConfig } from './../../../configs/pages'
+import { PROFILE_PAGE_SUBPATHS } from './../../../constants/urlPaths'
 
 /*
 |--------------------------------------------------------------------------
 | Styled Components
 |--------------------------------------------------------------------------
 */
-
-const Container = styled.div`
-  margin: auto;
-  max-width: 600px;
-  padding: 0 10px;
-`
-
-const FormContainer = styled.div`
-  margin-bottom: 36px;
-`
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +24,11 @@ const FormContainer = styled.div`
 
 class ProfilePage extends React.Component {
   render() {
-    const { user } = this.props
+    const {
+      history: { push },
+      location: { pathname },
+      user,
+    } = this.props
     const {
       isFacebookAccountConnected,
       isGoogleAccountConnected,
@@ -39,35 +37,75 @@ class ProfilePage extends React.Component {
     return (
       <Page.Container>
         <Page.ContentContainer>
-          <Page.Title>Your Profile</Page.Title>
+          <Page.Title>{profilePageConfig.label}</Page.Title>
           <Panel.ColumnsContainer>
-            <Panel.PageNavContainer
-              style={{ width: '270px', height: 'fit-content' }}
-            >
-              <Panel.Section>User Info</Panel.Section>
+            {/* Nav Panel */}
+            <Panel.PageNavContainer>
+              {profilePageConfig.subRoutes.map(({ label, path }) => {
+                return (
+                  <Panel.PageNavItem
+                    isActive={pathname === path}
+                    onClick={() => push(path)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {startCase(capitalize(label))}
+                  </Panel.PageNavItem>
+                )
+              })}
             </Panel.PageNavContainer>
             <div style={{ flexGrow: 1 }}>
               {/* User Info */}
-              <Panel.Container>
-                <Panel.Section>
-                  <Panel.SectionTitle>General Info</Panel.SectionTitle>
-                  <UserInfoForm user={user} />
-                </Panel.Section>
-                {/* Social Platform Accounts */}
-                <Panel.Section>
-                  <Panel.SectionTitle>Social Media Accounts</Panel.SectionTitle>
-                  <div>
-                    {isFacebookAccountConnected &&
-                      'Facebook account is connected'}
-                  </div>
-                  <div>
-                    {isGoogleAccountConnected && 'Google account is connected'}
-                  </div>
-                  <div>
-                    {isGithubAccountConnected && 'Github account is connected'}
-                  </div>
-                </Panel.Section>
-              </Panel.Container>
+              <Route
+                key={PROFILE_PAGE_SUBPATHS.USER_INFO}
+                exact
+                path={[
+                  profilePageConfig.path,
+                  PROFILE_PAGE_SUBPATHS.USER_INFO,
+                ].join('/')}
+                render={() => {
+                  return (
+                    <Panel.Container>
+                      <Panel.Section>
+                        <Panel.SectionTitle>General Info</Panel.SectionTitle>
+                        <UserInfoForm user={user} />
+                      </Panel.Section>
+                    </Panel.Container>
+                  )
+                }}
+              />
+
+              <Route
+                key={PROFILE_PAGE_SUBPATHS.LINKED_ACCOUNTS}
+                exact
+                path={[
+                  profilePageConfig.path,
+                  PROFILE_PAGE_SUBPATHS.LINKED_ACCOUNTS,
+                ].join('/')}
+                render={() => {
+                  return (
+                    <Panel.Container>
+                      {/* Social Platform Accounts */}
+                      <Panel.Section>
+                        <Panel.SectionTitle>
+                          Social Media Accounts
+                        </Panel.SectionTitle>
+                        <div>
+                          {isFacebookAccountConnected &&
+                            'Facebook account is connected'}
+                        </div>
+                        <div>
+                          {isGoogleAccountConnected &&
+                            'Google account is connected'}
+                        </div>
+                        <div>
+                          {isGithubAccountConnected &&
+                            'Github account is connected'}
+                        </div>
+                      </Panel.Section>
+                    </Panel.Container>
+                  )
+                }}
+              />
             </div>
           </Panel.ColumnsContainer>
         </Page.ContentContainer>
@@ -88,4 +126,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(ProfilePage)
+export default withRouter(connect(mapStateToProps)(ProfilePage))
