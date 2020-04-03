@@ -2,7 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { capitalize } from 'lodash'
+import { capitalize, startCase } from 'lodash'
 import { SEARCH_BAR_DESKTOP_WIDTH } from './../../styles/globalLayout'
 
 /*
@@ -122,7 +122,7 @@ const PageNavItem = ({ label, isActive, to, count }) => {
       style={{ textDecoration: 'none' }}
     >
       <PageNavItemContainer isActive={isActive}>
-        {typeof label === 'string' ? capitalize(label) : label}{' '}
+        {typeof label === 'string' ? startCase(capitalize(label)) : label}
         {Number.isInteger(count) && (
           <TotalCount isActive={isActive}>{count}</TotalCount>
         )}
