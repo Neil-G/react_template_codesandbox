@@ -6,15 +6,9 @@
 
 const global = {
   isOpen: {
-    topNav: false
-  }
-};
-
-const session = {
-  userId: null
-};
-
-const users = {}
+    topNav: false,
+  },
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +18,13 @@ const users = {}
 
 export default {
   global,
-  session,
-  users,
-};
+  session: { userId: null },
+  users: {},
+  directMessages: {},
+  items: {},
+  forumPosts: {},
+  forumThreads: {},
+  group: {},
+  groupMemberships: {},
+  notes: {},
+}
