@@ -25,15 +25,7 @@ class ItemsPage extends React.Component {
       <Page.Container>
         <Page.ContentContainer>
           <Page.Title>Items</Page.Title>
-          <Page.Nav
-            rootPath={itemsPageConfig.path}
-            navItems={[
-              { label: 'public', count: 10 },
-              { label: 'draft', count: 25 },
-              { label: 'archived', count: 15 },
-              { label: 'all', count: 5 },
-            ]}
-          />
+          <Page.Nav navItems={itemsPageConfig.subRoutes} />
         </Page.ContentContainer>
       </Page.Container>
     )

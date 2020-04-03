@@ -48,15 +48,7 @@ class SearchPage extends React.Component {
               Filter
             </OpenMobileFilterButton>
           </Page.Title>
-          <Page.Nav
-            rootPath={searchPageConfig.path}
-            navItems={[
-              { label: 'new', count: 10 },
-              { label: 'read', count: 25 },
-              { label: 'saved', count: 15 },
-              { label: 'all', count: 5 },
-            ]}
-          />
+          <Page.Nav navItems={searchPageConfig.subRoutes} />
         </Page.ContentContainer>
       </Page.Container>
     )
