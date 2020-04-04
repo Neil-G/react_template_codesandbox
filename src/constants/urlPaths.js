@@ -7,7 +7,7 @@ export const SettingsPath = '/settings'
 |--------------------------------------------------------------------------
 */
 export const ONBOARDING_PAGE_PATH = [ROOT_URL_PATH, 'onboarding'].join('/')
-export const USER_HOME_PATH = [ROOT_URL_PATH, 'home'].join('/')
+export const HOME_PAGE_PATH = [ROOT_URL_PATH, 'home'].join('/')
 export const SEARCH_PATH = [ROOT_URL_PATH, 'search'].join('/')
 export const MANAGE_PAGE_PATH = [ROOT_URL_PATH, 'manage'].join('/')
 export const MESSAGES_PAGE_PATH = [ROOT_URL_PATH, 'messages'].join('/')
@@ -20,6 +20,18 @@ export const ITEMS_PAGE_PATH = [ROOT_URL_PATH, 'items'].join('/')
 | Subpaths
 |--------------------------------------------------------------------------
 */
+
+// Onboarding Page Subpaths
+export const ONBOARDING_PAGE_SUBPATHS = {
+  FIRST: 'first',
+  SECOND: 'second',
+  TERMS: 'terms-and-conditions',
+}
+
+export const ONBOARDING_PAGE_PATHS = createPagePathnames(
+  ONBOARDING_PAGE_PATH,
+  ONBOARDING_PAGE_SUBPATHS,
+)
 
 // Search Page Paths
 export const SEARCH_PAGE_SUBPATHS = {
@@ -55,12 +67,14 @@ export const ITEMS_PAGE_SUBPATHS = {
   ALL: 'all',
 }
 
+// Forum Page Subpaths
 export const FORUM_PAGE_SUBPATHS = {
   ALL: 'all',
   ISSUES: 'issues',
   RANDOM: 'random',
 }
 
+// Profile Page Subpaths
 export const PROFILE_PAGE_SUBPATHS = {
   USER_INFO: 'user',
   LINKED_ACCOUNTS: 'linked-accounts',

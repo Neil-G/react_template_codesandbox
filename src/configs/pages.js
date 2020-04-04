@@ -1,5 +1,6 @@
 import {
-  USER_HOME_PATH,
+  ONBOARDING_PAGE_PATH,
+  HOME_PAGE_PATH,
   SEARCH_PATH,
   PROFILE_PAGE_PATH,
   MANAGE_PAGE_PATH,
@@ -12,8 +13,10 @@ import {
   ITEMS_PAGE_SUBPATHS,
   FORUM_PAGE_SUBPATHS,
   PROFILE_PAGE_SUBPATHS,
+  ONBOARDING_PAGE_SUBPATHS,
 } from './../constants/urlPaths'
 import {
+  OnboardingPage,
   HomePage,
   ProfilePage,
   SearchPage,
@@ -23,9 +26,21 @@ import {
   ItemsPage,
 } from './../components/pages'
 
+export const onboardingPageConfig = {
+  label: 'Onboarding',
+  path: ONBOARDING_PAGE_PATH,
+  PageComponent: OnboardingPage,
+  redirects: [
+    {
+      from: ONBOARDING_PAGE_PATH,
+      to: [ONBOARDING_PAGE_PATH, ONBOARDING_PAGE_SUBPATHS.FIRST].join('/'),
+    },
+  ],
+}
+
 export const homePageConfig = {
   label: 'Home',
-  path: USER_HOME_PATH,
+  path: HOME_PAGE_PATH,
   PageComponent: HomePage,
 }
 
@@ -139,6 +154,7 @@ export const itemsPageConfig = {
 }
 
 export const allPageConfigs = [
+  onboardingPageConfig,
   homePageConfig,
   searchPageConfig,
   managePageConfig,

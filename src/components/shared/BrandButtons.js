@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import chroma from 'chroma-js'
 
-export const configureButton = ({ color, background }) => {
+export const configureButton = ({ color, background, borderColor }) => {
   const hoverBg = chroma(background).darken(0.4)
   return styled.button`
-    border: none;
+    border: 1px solid ${borderColor || background};
     font-weight: 550;
     border-radius: 4px;
     display: flex;
@@ -35,10 +35,17 @@ const buttonConfigs = {
     color: 'whitesmoke',
     background: '#0F8B8D',
   },
+  white: {
+    color: '#333',
+    background: 'white',
+    borderColor: '#eeeeee',
+  },
 }
 
 export const PrimaryButton = configureButton(buttonConfigs.primary)
+export const WhiteButton = configureButton(buttonConfigs.white)
 
 export default {
   Primary: PrimaryButton,
+  White: WhiteButton,
 }
