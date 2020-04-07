@@ -5,7 +5,11 @@ import { withRouter } from 'react-router'
 import get from 'lodash.get'
 import App from './App'
 import { allPageConfigs } from './configs/pages'
-
+import EditItemPage from './components/pages/items/edit'
+import {
+  ITEMS_PAGE_SUBPATH_EDIT,
+  ITEMS_PAGE_SUBPATH_PROFILE,
+} from './constants/urlPaths'
 /*
 |--------------------------------------------------------------------------
 | Augmented Routes
@@ -46,6 +50,20 @@ const RouteWithUtils = withRouter(
 |--------------------------------------------------------------------------
 */
 
+const customPageConfigs = [
+  {
+    label: 'Edit Item',
+    path: [ITEMS_PAGE_SUBPATH_EDIT, ':itemId'].join('/'),
+    PageComponent: EditItemPage,
+  },
+]
+
+/*
+|--------------------------------------------------------------------------
+| Redirects
+|--------------------------------------------------------------------------
+*/
+
 let redirects = []
 allPageConfigs.forEach(pageConfig => {
   if (pageConfig.redirects) {
@@ -68,17 +86,19 @@ export default (
         {redirects.map(redirect => (
           <Redirect exact {...redirect} />
         ))}
-        {allPageConfigs.map(({ path, PageComponent }) => {
-          return (
-            <RouteWithUtils
-              key={path}
-              path={path}
-              component={
-                !!PageComponent ? PageComponent : () => <div>{path}</div>
-              }
-            />
-          )
-        })}
+        {[...customPageConfigs, ...allPageConfigs].map(
+          ({ path, PageComponent }) => {
+            return (
+              <RouteWithUtils
+                key={path}
+                path={path}
+                component={
+                  !!PageComponent ? PageComponent : () => <div>{path}</div>
+                }
+              />
+            )
+          },
+        )}
       </Switch>
     </App>
   </BrowserRouter>
