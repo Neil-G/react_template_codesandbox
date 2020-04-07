@@ -38,12 +38,16 @@ const StyledTextInput = styled.input`
 const StyledTextArea = styled.textarea`
   width: 100%;
   margin: auto;
+  height: 120px;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 12px;
+  padding: 18px;
   outline: none;
   border-radius: 3px;
   border: 1px solid #e3eaef !important;
+  &:focus {
+    background: #e3f2fd;
+  }
 `
 
 /*
@@ -57,13 +61,12 @@ export const TextInput = ({
   label,
   type = 'text',
   value = '',
-  onChange,
-  labelStyle = {},
+  onChange = noop,
   placeholder = '',
   isValid,
   disabled = false,
   inputStyle = {},
-  handleSaveChange,
+  handleSaveChange = noop,
   lastSavedValue,
 }) => {
   const [isSaving, setIsSaving] = useState(false)
@@ -78,9 +81,9 @@ export const TextInput = ({
         max={100}
         type={type}
         value={value}
-        onChange={!!onChange && onChange}
+        onChange={onChange}
         onBlur={async () => {
-          if (!!handleSaveChange && value !== lastSavedValue) {
+          if (value !== lastSavedValue) {
             setIsSaving(true)
             await handleSaveChange()
             setIsSaving(false)
@@ -105,15 +108,18 @@ export const TextInput = ({
   )
 }
 
-export const TextArea = ({
+export const TextAreaInput = ({
   label,
   characterCountLimit,
   onChange,
+  lastSavedValue,
   value = '',
   width = '100%',
   isValid,
   placeholder,
+  handleSaveChange = noop,
 }) => {
+  const [isSaving, setIsSaving] = useState(false)
   return (
     <TextInputContainer width={width}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -135,6 +141,13 @@ export const TextArea = ({
             : value
         }
         onChange={!!onChange && onChange}
+        onBlur={async () => {
+          if (value !== lastSavedValue) {
+            setIsSaving(true)
+            await handleSaveChange()
+            setIsSaving(false)
+          }
+        }}
       />
       {isValid === true && (
         <FontAwesomeIcon
