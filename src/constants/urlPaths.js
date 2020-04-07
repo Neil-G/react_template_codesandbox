@@ -66,6 +66,13 @@ export const ITEMS_PAGE_SUBPATHS = {
   ARCHIVED: 'archived',
   ALL: 'all',
 }
+export const ITEMS_PAGE_SUBPATH_EDIT = [ITEMS_PAGE_PATH, 'edit'].join('/')
+export const ITEMS_PAGE_SUBPATH_PROFILE = [ITEMS_PAGE_PATH, 'profile'].join('/')
+
+export const ITEMS_PAGE_PATHS = createPagePathnames(
+  ITEMS_PAGE_PATH,
+  ITEMS_PAGE_SUBPATHS,
+)
 
 // Forum Page Subpaths
 export const FORUM_PAGE_SUBPATHS = {
