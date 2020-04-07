@@ -40,12 +40,18 @@ const buttonConfigs = {
     background: 'white',
     borderColor: '#eeeeee',
   },
+  destructive: {
+    color: 'white',
+    background: 'tomato',
+  },
 }
 
 export const PrimaryButton = configureButton(buttonConfigs.primary)
 export const WhiteButton = configureButton(buttonConfigs.white)
+export const DestructiveButton = configureButton(buttonConfigs.destructive)
 
 export default {
   Primary: PrimaryButton,
   White: WhiteButton,
+  Destructive: DestructiveButton,
 }
