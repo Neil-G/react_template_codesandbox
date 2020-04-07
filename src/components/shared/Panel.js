@@ -32,7 +32,7 @@ export const PanelSection = styled.div`
 
 export const PanelSectionTitle = styled.h3`
   font-weight: 700;
-  margin-top: 0px;
+  margin: 0px;
 `
 
 export const PanelColumnsContainer = styled.div`
