@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { get, startCase, capitalize } from 'lodash'
-import { SettingsPath, PROFILE_PAGE_PATH } from './../../constants/urlPaths.js'
-import { globalLayout } from './../../styles'
-import updater from './../../redux/updater'
-import { logout } from './../../utils'
+import { SettingsPath, PROFILE_PAGE_PATH } from '../../../constants/urlPaths.js'
+import { globalLayout } from '../../../styles'
+import updater from '../../../redux/updater'
+import { logout } from '../../../utils'
 import {
   homePageConfig,
   searchPageConfig,
@@ -16,9 +16,10 @@ import {
   forumPageConfig,
   profilePageConfig,
   itemsPageConfig,
-} from './../../configs/pages'
-import { light } from './../../styles/colors'
+} from '../../../configs/pages'
+import { light } from '../../../styles/colors'
 import TetherComponent from 'react-tether'
+import NavItemWithSubmenu from './NavItemWithSubmenu'
 const withClickOutside = require('react-click-outside')
 
 /*
@@ -173,74 +174,6 @@ const SubNavLinkItem = styled(Link)`
   }
 `
 
-class NavItemWithSubmenu extends React.Component {
-  render() {
-    const {
-      label,
-      path,
-      subRoutes,
-      isSubMenuOpen,
-      openSubMenu,
-      closeSubMenu,
-      pathname,
-      push,
-    } = this.props
-    return (
-      <TetherComponent
-        attachment='top center'
-        constraints={[
-          {
-            to: 'scrollParent',
-            attachment: 'together',
-          },
-        ]}
-        /* renderTarget: This is what the item will be tethered to, make sure to attach the ref */
-        renderTarget={ref => (
-          <NavItem
-            onClick={() => (push(path), closeSubMenu())}
-            isActive={pathname.includes(path)}
-            ref={ref}
-            onMouseEnter={openSubMenu}
-          >
-            {label}
-          </NavItem>
-        )}
-        /* renderElement: If present, this item will be tethered to the the component returned by renderTarget */
-        renderElement={ref =>
-          isSubMenuOpen && (
-            <div
-              onMouseLeave={closeSubMenu}
-              ref={ref}
-              style={{
-                border: '1px solid rgba(0,0,0,0.15)',
-                padding: '18px',
-                background: 'white',
-                width: '160px',
-                borderRadius: '3px',
-              }}
-            >
-              {subRoutes.map(subRoute => {
-                return (
-                  <div>
-                    <SubNavLinkItem
-                      isActive={pathname === subRoute.path}
-                      onClick={closeSubMenu}
-                      onMouseLeave={e => e.stopPropagation()}
-                      to={subRoute.path}
-                    >
-                      {startCase(capitalize(subRoute.label))}
-                    </SubNavLinkItem>
-                  </div>
-                )
-              })}
-            </div>
-          )
-        }
-      />
-    )
-  }
-}
-
 /*
 |--------------------------------------------------------------------------
 | Mobile Menu
@@ -331,14 +264,68 @@ class TopNav extends React.Component {
     openNavSubitemMenu: undefined,
     isUserMenuOpen: false,
   }
-  render() {
-    const {
-      user,
-      location: { pathname },
-      history: { push },
-    } = this.props
-    const { isUserMenuOpen, isMobileMenuOpen, openNavSubitemMenu } = this.state
 
+  _renderDesktopNavItems = () => {
+    const { history } = this.props
+    const { openNavSubitemMenu } = this.state
+    return (
+      <DesktopNavItemContainer>
+        {/*  NDesktop Nav Items */}
+        {desktopNavItems.map(navItemConfig => (
+          <NavItemWithSubmenu
+            {...navItemConfig}
+            history={history}
+            openSubmenuName={openNavSubitemMenu}
+            setOpenSubmenuName={submenuName =>
+              this.setState({ openNavSubitemMenu: submenuName })
+            }
+          />
+        ))}
+      </DesktopNavItemContainer>
+    )
+  }
+
+  _renderUserMenu = () => {
+    const { user } = this.props
+    const { isUserMenuOpen } = this.state
+    return (
+      <UserMenuButtonContainer>
+        <i
+          className='fal fa-user-circle user-menu-icon'
+          style={{ marginRight: '8px', fontSize: '1.5em' }}
+        />
+        <i
+          id='user-menu-toggle-icon'
+          className='fas fa-caret-down user-menu-dropdown'
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            this.setState({ isUserMenuOpen: !isUserMenuOpen })
+          }}
+        />
+        {isUserMenuOpen && <UserMenu user={user} />}
+      </UserMenuButtonContainer>
+    )
+  }
+
+  _renderMobileMenu = () => {
+    const { isMobileMenuOpen } = this.state
+    return (
+      <MobileMenuButtonContainer>
+        <i
+          className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
+          style={{ cursor: 'pointer' }}
+          onClick={() => this.setState({ isMobileMenuOpen: !isMobileMenuOpen })}
+        ></i>
+        {isMobileMenuOpen && (
+          <MobileMenu
+            closeMobileMenu={() => this.setState({ isMobileMenuOpen: false })}
+          />
+        )}
+      </MobileMenuButtonContainer>
+    )
+  }
+
+  render() {
     return (
       <Container
         onMouseLeave={() => this.setState({ openNavSubitemMenu: undefined })}
@@ -351,76 +338,13 @@ class TopNav extends React.Component {
         </NavItem>
 
         {/* Center Nav Options */}
-        <DesktopNavItemContainer>
-          {/*  NDesktop Nav Items */}
-          {desktopNavItems.map(({ label, path, subRoutes }) => {
-            if (subRoutes) {
-              return (
-                <NavItemWithSubmenu
-                  label={label}
-                  path={path}
-                  subRoutes={subRoutes}
-                  pathname={pathname}
-                  push={push}
-                  isSubMenuOpen={openNavSubitemMenu === label}
-                  openSubMenu={() =>
-                    this.setState({ openNavSubitemMenu: label })
-                  }
-                  closeSubMenu={() =>
-                    this.setState({ openNavSubitemMenu: undefined })
-                  }
-                />
-              )
-            } else {
-              return (
-                <NavItem
-                  key={label}
-                  isActive={pathname.includes(path)}
-                  onClick={() => push(path)}
-                  onMouseEnter={() =>
-                    openNavSubitemMenu !== label &&
-                    this.setState({ openNavSubitemMenu: undefined })
-                  }
-                >
-                  {label}
-                </NavItem>
-              )
-            }
-          })}
-        </DesktopNavItemContainer>
+        {this._renderDesktopNavItems()}
 
         {/* Desktop User Menu */}
-        <UserMenuButtonContainer>
-          <i
-            className='fal fa-user-circle user-menu-icon'
-            style={{ marginRight: '8px', fontSize: '1.5em' }}
-          />
-          <i
-            id='user-menu-toggle-icon'
-            className='fas fa-caret-down user-menu-dropdown'
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              this.setState({ isUserMenuOpen: !isUserMenuOpen })
-            }}
-          />
-          {isUserMenuOpen && <UserMenu user={user} />}
-        </UserMenuButtonContainer>
+        {this._renderUserMenu()}
 
         {/* Mobile hamburger menu button */}
-        <MobileMenuButtonContainer>
-          <i
-            className={isMobileMenuOpen ? 'fas fa-times' : 'fas fa-bars'}
-            style={{ cursor: 'pointer' }}
-            onClick={() =>
-              this.setState({ isMobileMenuOpen: !isMobileMenuOpen })
-            }
-          ></i>
-          {isMobileMenuOpen && (
-            <MobileMenu
-              closeMobileMenu={() => this.setState({ isMobileMenuOpen: false })}
-            />
-          )}
-        </MobileMenuButtonContainer>
+        {this._renderMobileMenu()}
       </Container>
     )
   }
