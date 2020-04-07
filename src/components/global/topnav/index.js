@@ -20,6 +20,7 @@ import {
 import { light } from '../../../styles/colors'
 import TetherComponent from 'react-tether'
 import NavItemWithSubmenu from './NavItemWithSubmenu'
+import UserMenu from './UserMenu'
 const withClickOutside = require('react-click-outside')
 
 /*
@@ -69,108 +70,6 @@ const NavItem = styled.div`
   > .user-menu-dropdown {
     margin-left: 8px;
     cursor: pointer;
-  }
-`
-
-/*
-|--------------------------------------------------------------------------
-| User Menu
-|--------------------------------------------------------------------------
-*/
-
-const UserMenuButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 18px;
-  @media (max-width: 720px) {
-    display: none;
-  }
-`
-
-const UserMenuContainer = styled.div`
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  position: absolute;
-  width: 200px;
-  top: ${globalLayout.topNavHeightPx};
-  right: 12px;
-  border-radius: 4px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  z-index: 1000;
-`
-
-const UserMenuItem = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 6px;
-  cursor: pointer;
-  &:hover {
-    background: snow;
-  }
-  > i {
-    margin-right: 9px;
-  }
-`
-
-class UserMenuComponent extends React.Component {
-  handleClickOutside = evt => {
-    if (evt.target.id !== 'user-menu-toggle-icon') {
-      this._closeMenu()
-    }
-  }
-
-  _closeMenu = () => {
-    updater.toggleOpenGlobal({
-      componentName: 'topNav',
-      shouldOpenComponent: false,
-    })
-  }
-
-  render() {
-    return (
-      <UserMenuContainer>
-        <UserMenuItem>signed in as UserName</UserMenuItem>
-        <Link to={PROFILE_PAGE_PATH} onClick={() => this._closeMenu()}>
-          <UserMenuItem>
-            <i className='fal fa-id-card' />
-            Your Profile
-          </UserMenuItem>
-        </Link>
-        <Link to={SettingsPath} onClick={() => this._closeMenu()}>
-          <UserMenuItem>
-            <i className='fal fa-cog' />
-            Settings
-          </UserMenuItem>
-        </Link>
-        <UserMenuItem onClick={logout}>
-          <i className='fal fa-sign-out-alt' />
-          Logout
-        </UserMenuItem>
-      </UserMenuContainer>
-    )
-  }
-}
-
-const UserMenu = withClickOutside(UserMenuComponent)
-
-/*
-|--------------------------------------------------------------------------
-| Desktop Sub Menu Options
-|--------------------------------------------------------------------------
-*/
-
-const SubNavLinkItem = styled(Link)`
-  display: block;
-  padding: 9px;
-  text-decoration: none;
-  border-right: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
-  &:hover {
-    border-right: 5px solid
-      ${({ isActive }) => (isActive ? 'tomato' : '#ffcdd2')};
   }
 `
 
@@ -285,28 +184,6 @@ class TopNav extends React.Component {
     )
   }
 
-  _renderUserMenu = () => {
-    const { user } = this.props
-    const { isUserMenuOpen } = this.state
-    return (
-      <UserMenuButtonContainer>
-        <i
-          className='fal fa-user-circle user-menu-icon'
-          style={{ marginRight: '8px', fontSize: '1.5em' }}
-        />
-        <i
-          id='user-menu-toggle-icon'
-          className='fas fa-caret-down user-menu-dropdown'
-          style={{ cursor: 'pointer' }}
-          onClick={() => {
-            this.setState({ isUserMenuOpen: !isUserMenuOpen })
-          }}
-        />
-        {isUserMenuOpen && <UserMenu user={user} />}
-      </UserMenuButtonContainer>
-    )
-  }
-
   _renderMobileMenu = () => {
     const { isMobileMenuOpen } = this.state
     return (
@@ -341,7 +218,7 @@ class TopNav extends React.Component {
         {this._renderDesktopNavItems()}
 
         {/* Desktop User Menu */}
-        {this._renderUserMenu()}
+        <UserMenu />
 
         {/* Mobile hamburger menu button */}
         {this._renderMobileMenu()}
