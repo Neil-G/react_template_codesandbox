@@ -28,6 +28,21 @@ const SkipText = styled.div`
     text-decoration: underline;
   }
 `
+const ProgressBar = styled.div`
+  top: 0px;
+  height: 9px;
+  background: #66bb6a;
+  width: ${({ onboardingStepIdx = 0, formsLength }) =>
+    ((onboardingStepIdx + 1) / formsLength) * 100}%;
+  z-index: 1750;
+  transition: 0.4s width;
+`
+
+/*
+|--------------------------------------------------------------------------
+| Subpage configs
+|--------------------------------------------------------------------------
+*/
 
 const onboardingSubpagesConfig = [
   {
@@ -73,12 +88,21 @@ const onboardingSubpagesConfig = [
 */
 
 class OnboardingPage extends React.Component {
+  state = { onboardingIdx: 0 }
   render() {
     const {
-      history: { push },
+      history: {
+        push,
+        location: { pathname },
+      },
     } = this.props
+    const { onboardingIdx } = this.state
     return (
       <Page.Container>
+        <ProgressBar
+          onboardingStepIdx={onboardingIdx}
+          formsLength={onboardingSubpagesConfig.length}
+        />
         {onboardingSubpagesConfig.map(
           (
             {
@@ -103,6 +127,9 @@ class OnboardingPage extends React.Component {
                 exact
                 path={path}
                 render={() => {
+                  if (pathname.includes(path) && onboardingIdx !== idx) {
+                    this.setState({ onboardingIdx: idx })
+                  }
                   return (
                     <Page.ContentContainer maxWidth='960'>
                       <Page.Title className='spaced'>
