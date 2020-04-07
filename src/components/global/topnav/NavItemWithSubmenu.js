@@ -10,7 +10,7 @@ import { noop, startCase, capitalize } from 'lodash'
 |--------------------------------------------------------------------------
 */
 
-const NavItem = styled.div`
+export const NavItem = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: center;
