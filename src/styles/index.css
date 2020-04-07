@@ -13,3 +13,12 @@ ul {
   background: rgba(0, 0, 0, 0.85) !important;
   z-index: 1001 !important;
 }
+
+.spaced {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+}
