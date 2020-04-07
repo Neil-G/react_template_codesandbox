@@ -1,13 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import Page from './../../shared/Page'
 import Panel from './../../shared/Panel'
 import BrandButtons from './../../shared/BrandButtons'
-import { onboardingPageConfig } from './../../../configs/pages'
 import {
   ONBOARDING_PAGE_PATHS,
   HOME_PAGE_PATH,
@@ -36,21 +35,21 @@ const onboardingSubpagesConfig = [
     pageSubheading: 'Please tell us about yourself',
     path: ONBOARDING_PAGE_PATHS.FIRST,
     canSkip: true,
-    canContinue: () => true,
+    getErrors: () => [],
     Component: () => <Panel.Section>HELLO</Panel.Section>,
   },
   {
     pageHeading: 'We want a little bit more about you',
     pageSubheading: 'Some more questions',
     path: ONBOARDING_PAGE_PATHS.SECOND,
-    canContinue: () => true,
+    getErrors: () => [],
     Component: () => <Panel.Section>HI</Panel.Section>,
   },
   {
     pageHeading: 'Terms & Conditions',
     pageSubheading: "We'd like you to agree",
     path: ONBOARDING_PAGE_PATHS.TERMS,
-    canContinue: () => true,
+    getErrors: () => [],
     Component: () => (
       <Panel.Section style={{ lineHeight: '1.5em' }}>
         <p>
@@ -88,11 +87,13 @@ class OnboardingPage extends React.Component {
               path,
               Component,
               canSkip,
-              canContinue,
+              getErrors,
             },
             idx,
           ) => {
             const isLastStep = idx === onboardingSubpagesConfig.length - 1
+            const errors = getErrors()
+            const canContinue = isEmpty(errors)
             const backUrl = idx !== 0 && onboardingSubpagesConfig[idx - 1].path
             const nextUrl =
               !isLastStep && onboardingSubpagesConfig[idx + 1].path
@@ -131,10 +132,10 @@ class OnboardingPage extends React.Component {
                         )}
 
                         <BrandButtons.Primary
-                          disabled={!canContinue()}
+                          disabled={!canContinue}
                           style={{ float: 'right' }}
                           onClick={() => {
-                            if (!canContinue()) return
+                            if (!canContinue) return
                             if (!isLastStep) {
                               push(nextUrl)
                             } else {
