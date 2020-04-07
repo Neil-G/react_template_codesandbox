@@ -164,11 +164,11 @@ const UserMenu = withClickOutside(UserMenuComponent)
 
 const SubNavLinkItem = styled(Link)`
   display: block;
-  padding: 12px;
+  padding: 9px;
   text-decoration: none;
-  border-left: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
+  border-right: 5px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
   &:hover {
-    border-left: 5px solid
+    border-right: 5px solid
       ${({ isActive }) => (isActive ? 'tomato' : '#ffcdd2')};
   }
 `
@@ -213,7 +213,7 @@ class NavItemWithSubmenu extends React.Component {
               ref={ref}
               style={{
                 border: '1px solid rgba(0,0,0,0.15)',
-                padding: '8px',
+                padding: '18px',
                 background: 'white',
                 width: '160px',
                 borderRadius: '3px',

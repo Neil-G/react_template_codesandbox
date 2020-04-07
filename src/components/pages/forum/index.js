@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { get } from 'lodash'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-
 import Page from './../../shared/Page'
 import SelectInput from './../../forms/SelectInput'
 import { forumPageConfig } from './../../../configs/pages'
