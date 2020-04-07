@@ -88,7 +88,9 @@ class TopNav extends React.Component {
     const { history } = this.props
     const { openNavSubitemMenu } = this.state
     return (
-      <DesktopNavItemContainer>
+      <DesktopNavItemContainer
+        onMouseLeave={() => this.setState({ openNavSubitemMenu: undefined })}
+      >
         {/*  Desktop Nav Items */}
         {desktopNavItems.map(navItemConfig => (
           <NavItemWithSubmenu
@@ -105,6 +107,7 @@ class TopNav extends React.Component {
   }
 
   render() {
+    const { history } = this.props
     return (
       <Container
         onMouseLeave={() => this.setState({ openNavSubitemMenu: undefined })}
@@ -123,7 +126,7 @@ class TopNav extends React.Component {
         <UserMenu />
 
         {/* Mobile hamburger menu button */}
-        <MobileMenu navItemConfigs={mobileMenuItems} />
+        <MobileMenu navItemConfigs={mobileMenuItems} history={history} />
       </Container>
     )
   }

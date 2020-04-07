@@ -89,7 +89,6 @@ export default ({
             onClick={() => (push(path), setOpenSubmenuName(undefined))}
             isActive={pathname.includes(path)}
             ref={ref}
-            onMouseLeave={() => setOpenSubmenuName(undefined)}
             onMouseEnter={() => setOpenSubmenuName(label)}
           >
             {label}

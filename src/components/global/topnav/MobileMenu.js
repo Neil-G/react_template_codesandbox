@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 import { logout } from '../../../utils'
 import { light } from '../../../styles/colors'
 
@@ -31,9 +30,11 @@ const MobileMenuContainer = styled.div`
 `
 
 const MobileNavItem = styled.div`
+  box-sizing: border-box;
   width: 100%;
   padding: 20px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-left: 6px solid ${({ isActive }) => (isActive ? 'tomato' : 'white')};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,7 +43,13 @@ const MobileNavItem = styled.div`
   }
 `
 
-export default ({ navItemConfigs }) => {
+export default ({
+  navItemConfigs,
+  history: {
+    push,
+    location: { pathname },
+  },
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <MobileMenuButtonContainer>
@@ -54,10 +61,14 @@ export default ({ navItemConfigs }) => {
       {isOpen && (
         <MobileMenuContainer>
           {navItemConfigs.map(({ path, label }) => {
+            const isActive = pathname.includes(path)
             return (
-              <Link to={path} onClick={() => setIsOpen(false)}>
-                <MobileNavItem>{label}</MobileNavItem>
-              </Link>
+              <MobileNavItem
+                isActive={isActive}
+                onClick={() => (push(path), setIsOpen(false))}
+              >
+                {label}
+              </MobileNavItem>
             )
           })}
           <MobileNavItem onClick={logout}>Logout</MobileNavItem>
